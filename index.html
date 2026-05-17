@@ -67,14 +67,14 @@
         .ctrl-input:focus { border-color: var(--accent-blue); outline: none; }
         .btn-add { background: var(--accent-blue); color: #fff; border: none; padding: 0 15px; height: 34px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
 
-        /* جداول نقاط البيع الحقيقية */
+        /* جداول نقاط البيع */
         .table-scroll { max-height: 220px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 10px; text-align: left; font-size: 0.8rem; border-bottom: 1px solid var(--border-color); }
         th { background-color: #f1f5f9; color: var(--text-main); font-weight: 700; position: sticky; top:0; border-bottom: 2px solid var(--border-color); }
         tr:hover { background-color: #f8fafc; }
 
-        /* سلة فواتير الكاش */
+        /* سلة الفواتير */
         .cart-wrapper { display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 270px; }
         .cart-list { flex-grow: 1; overflow-y: auto; max-height: 200px; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 0.8rem; }
@@ -82,13 +82,13 @@
         .btn-secondary { background: #f1f5f9; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border-radius: 4px; }
         .btn-pay { width: 100%; background: var(--accent-green); color: #fff; border: none; padding: 12px; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
 
-        /* كروت Aumet ونظام التنبؤ */
+        /* كروت الربط المتزامن */
         .aumet-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; border-top: 4px solid var(--accent-purple); display: flex; flex-direction: column; gap: 6px; }
         .aumet-item-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px dashed var(--border-color); direction: rtl; }
         .badge { font-size: 0.65rem; padding: 3px 6px; background: #f3e8ff; color: var(--accent-purple); font-weight: bold; border-radius: 4px; }
         .badge.green { background: #dcfce7; color: var(--accent-green); }
 
-        /* الفاتورة الحرارية */
+        /* الفاتورة المستندية */
         .modal-receipt { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 4000; }
         .receipt-sheet { background: #fff; color: #000; width: 300px; padding: 20px; font-family: monospace; font-size: 0.75rem; border-radius: 4px; }
         .receipt-sheet th, .receipt-sheet td { color: #000; padding: 5px 0; border-bottom: 1px dashed #000; font-family: monospace; }
@@ -227,7 +227,7 @@
     }
 
     function checkOfflineDB() {
-        alert("🔒 قاعدة البيانات المحلية:\n- الحالة: متصلة.\n- عدد المواد المخزنة بالكامل: " + db.length + " أدوية.");
+        alert("🔒 قاعدة البيانات المحلية:\n- الحالة: متصلة وجاهزة.\n- عدد المواد المخزنة بالكامل: " + db.length + " أدوية.");
     }
 
     function generateLargePharmacyDatabase() {
@@ -235,6 +235,7 @@
         const drugPrefixes = ["Panadol", "Amoclan", "Voltaren", "Profinal", "Augmentin", "Lipitor", "Concor", "Nexium", "Gaviscon", "Catafast", "Advil", "Zyrtec", "Claritin", "Ventolin", "Brufen", "Glucophage", "Esomeprazole", "Omeprazole", "Paracetamol", "Ibuprofen", "Vichy Cream", "CeraVe Lotion", "Bioderma Sunscreen", "Panadol Extra", "Panadol Joint"];
         const categories = ["500mg", "625mg", "1g", "400mg", "20mg", "10mg", "Gel", "Syrup", "Tablets", "Capsules"];
         
+        // 1. توليد 650 صنف شغالين بكميات طبيعية
         for (let i = 1; i <= 650; i++) {
             let pref = drugPrefixes[Math.floor(Math.random() * drugPrefixes.length)];
             let cat = categories[Math.floor(Math.random() * categories.length)];
@@ -246,6 +247,7 @@
             generatedDb.push({ barcode, name, cost, price, stock });
         }
 
+        // 2. توليد 50 صنف منتهين تماماً (مقطوعين)
         for (let i = 1; i <= 50; i++) {
             let pref = drugPrefixes[Math.floor(Math.random() * drugPrefixes.length)];
             let name = `❌ OUT OF STOCK: ${pref} Essential Max`;
@@ -258,14 +260,15 @@
         return generatedDb;
     }
 
-    let db = JSON.parse(localStorage.getItem('j_v5_db'));
+    // ⚡ تحديث اسم المفتاح لإجبار الـ LocalStorage على مسح القديم والتحميل فوراً
+    let db = JSON.parse(localStorage.getItem('j_final_mega_db'));
     if (!db || db.length < 700) {
         db = generateLargePharmacyDatabase();
-        localStorage.setItem('j_v5_db', JSON.stringify(db));
+        localStorage.setItem('j_final_mega_db', JSON.stringify(db));
     }
 
-    let totalSales = parseFloat(localStorage.getItem('j_v5_sales')) || 0.00;
-    let totalProfit = parseFloat(localStorage.getItem('j_v5_profit')) || 0.00;
+    let totalSales = parseFloat(localStorage.getItem('j_final_sales')) || 0.00;
+    let totalProfit = parseFloat(localStorage.getItem('j_final_profit')) || 0.00;
     let cart = [];
     let heldCart = null;
 
@@ -280,9 +283,9 @@
     });
 
     function syncStorage() {
-        localStorage.setItem('j_v5_db', JSON.stringify(db));
-        localStorage.setItem('j_v5_sales', totalSales.toString());
-        localStorage.setItem('j_v5_profit', totalProfit.toString());
+        localStorage.setItem('j_final_mega_db', JSON.stringify(db));
+        localStorage.setItem('j_final_sales', totalSales.toString());
+        localStorage.setItem('j_final_profit', totalProfit.toString());
     }
 
     function render() {
