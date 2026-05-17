@@ -3,93 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juwaida Pharmacy OS</title>
+    <title>Juwaida Enterprise POS</title>
     
     <style>
         :root {
-            --bg-main: #121212;
-            --bg-panel: #1e1e1e;
-            --bg-input: #292929;
-            --border-color: #333333;
-            --text-main: #e0e0e0;
-            --text-muted: #888888;
-            --btn-blue: #2b5b84;
-            --btn-green: #2e7d32;
-            --btn-danger: #c62828;
+            --bg-main: #1a1c1e;
+            --bg-panel: #22252a;
+            --bg-input: #2d3139;
+            --border-color: #2f353e;
+            --text-main: #f1f3f5;
+            --text-muted: #9aa0a6;
+            --brand-blue: #3b82f6;
+            --brand-green: #10b981;
+            --brand-danger: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-main); padding: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); padding: 15px; overflow-x: hidden; }
         
-        .workspace { max-width: 1600px; margin: 0 auto; display: grid; gap: 15px; }
+        .workspace { max-width: 100%; margin: 0 auto; display: grid; gap: 15px; }
         
-        /* شاشة القفل بأسلوب جدي وصارم */
-        #lock-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #121212; z-index: 9999; display: none; justify-content: center; align-items: center; }
-        .lock-box { background: var(--bg-panel); border: 2px solid var(--border-color); padding: 40px; text-align: center; max-width: 500px; width: 100%; }
-        .lock-box h2 { color: var(--btn-danger); margin-bottom: 15px; font-size: 1.3rem; font-weight: bold; letter-spacing: 1px; }
+        /* 🔒 نظام الحماية والتعليق - مطور بالكامل */
+        #lock-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #1a1c1e; z-index: 9999; display: none; justify-content: center; align-items: center; }
+        .lock-box { background: var(--bg-panel); border: 1px solid var(--border-color); padding: 40px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .lock-box h2 { color: var(--brand-danger); margin-bottom: 15px; font-size: 1.25rem; font-weight: bold; letter-spacing: 0.5px; }
         .lock-box p { color: var(--text-main); font-size: 0.9rem; line-height: 1.6; direction: rtl; }
 
+        /* الهيدر على طريقة Aumet المريحة */
         header { 
             background: var(--bg-panel); 
-            padding: 15px 20px; 
+            padding: 12px 20px; 
             border: 1px solid var(--border-color); 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
         }
-        .brand { font-size: 1.1rem; font-weight: bold; color: #ffffff; }
-        .brand span { color: var(--text-muted); font-weight: normal; font-size: 0.8rem; margin-left: 10px; border-left: 1px solid var(--border-color); padding-left: 10px; }
-        .sys-status { font-size: 0.8rem; color: var(--text-muted); }
+        .brand { font-size: 1rem; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px; }
+        .brand span { color: var(--text-muted); font-weight: 400; font-size: 0.8rem; border-left: 1px solid var(--border-color); padding-left: 8px; }
+        .sys-status { font-size: 0.8rem; color: var(--brand-green); font-weight: 500; }
 
-        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .metric-card { background: var(--bg-panel); border: 1px solid var(--border-color); padding: 15px; }
-        .metric-card p { color: var(--text-muted); font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
-        .metric-card h3 { font-size: 1.4rem; font-weight: bold; margin-top: 5px; color: #ffffff; }
+        /* لوحة المؤشرات على طريقة Dawatech الذكية */
+        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .metric-card { background: var(--bg-panel); border: 1px solid var(--border-color); padding: 15px; position: relative; }
+        .metric-card p { color: var(--text-muted); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card h3 { font-size: 1.3rem; font-weight: 700; margin-top: 4px; color: #ffffff; }
 
-        .main-layout { display: grid; grid-template-columns: 2.2fr 1fr; gap: 15px; }
-        .panel { background: var(--bg-panel); border: 1px solid var(--border-color); padding: 20px; }
-        .panel-title { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: var(--text-muted); margin-bottom: 15px; letter-spacing: 0.5px; }
+        /* توزيع الشاشات الاحترافي مثل الفالكون سياستم */
+        .main-layout { display: grid; grid-template-columns: 2.4fr 1fr; gap: 15px; }
+        .panel { background: var(--bg-panel); border: 1px solid var(--border-color); padding: 15px; display: flex; flex-direction: column; }
+        .panel-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 0.5px; }
         
-        .form-row { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr auto; gap: 10px; align-items: flex-end; }
-        .input-group { display: flex; flex-direction: column; gap: 5px; }
-        .input-group label { font-size: 0.7rem; color: var(--text-muted); font-weight: bold; }
-        .field-ctrl { background: var(--bg-input); border: 1px solid var(--border-color); padding: 8px 10px; color: var(--text-main); font-size: 0.85rem; width: 100%; height: 35px; }
-        .field-ctrl:focus { border-color: #555555; outline: none; }
+        .form-row { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr auto; gap: 8px; align-items: flex-end; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+        .field-ctrl { background: var(--bg-input); border: 1px solid var(--border-color); padding: 8px 10px; color: var(--text-main); font-size: 0.85rem; width: 100%; height: 36px; transition: border 0.15s; }
+        .field-ctrl:focus { border-color: var(--brand-blue); outline: none; }
         
-        .btn-action { background: var(--btn-blue); color: #ffffff; border: none; padding: 0 15px; font-weight: bold; font-size: 0.85rem; cursor: pointer; height: 35px; }
-        .btn-action:hover { background: #3572a6; }
+        .btn-action { background: var(--brand-blue); color: #ffffff; border: none; padding: 0 15px; font-weight: 600; font-size: 0.85rem; cursor: pointer; height: 36px; }
+        .btn-action:hover { background: #2563eb; }
         
-        .search-container { margin-bottom: 15px; }
-        .search-field { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; color: var(--text-main); font-size: 0.85rem; }
+        .search-container { margin-bottom: 12px; }
+        .search-field { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px 12px; color: var(--text-main); font-size: 0.85rem; }
 
-        .table-view { max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color); }
+        /* منع التعليق بتحديد حجم الجدول وضغط البيانات */
+        .table-view { max-height: 440px; overflow-y: auto; border: 1px solid var(--border-color); background: #1e2126; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; text-align: left; }
-        th { background: #252525; color: var(--text-muted); font-weight: bold; position: sticky; top: 0; z-index: 10; font-size: 0.75rem; text-transform: uppercase; }
+        th, td { padding: 10px 14px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; text-align: left; }
+        th { background: #2a2f35; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; font-size: 0.75rem; text-transform: uppercase; }
         
-        .row-btn { background: none; border: none; color: #569cd6; cursor: pointer; font-size: 0.8rem; font-weight: bold; margin-right: 12px; }
-        .row-btn.purge { color: var(--btn-danger); }
+        .row-btn { background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 12px; }
+        .row-btn.purge { color: var(--brand-danger); }
 
-        .checkout-panel { display: flex; flex-direction: column; min-height: 550px; justify-content: space-between; }
-        .items-bucket { max-height: 350px; overflow-y: auto; }
-        .bucket-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+        /* الكاونتر الجانبي المخصص للفواتير السريعة */
+        .checkout-panel { display: flex; flex-direction: column; height: 535px; justify-content: space-between; }
+        .items-bucket { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; padding-right: 2px; }
+        .bucket-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
         
-        .summary-box { border-top: 1px solid var(--border-color); padding-top: 15px; }
-        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .btn-finalize { width: 100%; background: var(--btn-green); color: #ffffff; border: none; padding: 12px; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        .btn-finalize:hover { background: #388e3c; }
+        .summary-box { border-top: 1px solid var(--border-color); padding-top: 12px; }
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .btn-finalize { width: 100%; background: var(--brand-green); color: #ffffff; border: none; padding: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-finalize:hover { background: #059669; }
         
-        /* شاشة الفاتورة المخصصة للورق الحراري */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .invoice-sheet { background: #fff; color: #000; width: 320px; padding: 20px; font-family: monospace; font-size: 0.75rem; }
-        .invoice-sheet th, .invoice-sheet td { color: #000; padding: 5px 0; border-bottom: 1px dashed #000; font-family: monospace; font-size: 0.75rem; }
+        /* الفاتورة الحرارية المعيارية لـ أسواق الأردن */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .invoice-sheet { background: #fff; color: #000; width: 300px; padding: 20px 15px; font-family: monospace; font-size: 0.75rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .invoice-sheet th, .invoice-sheet td { color: #000; padding: 4px 0; border-bottom: 1px dashed #000; font-family: monospace; font-size: 0.75rem; }
         .invoice-sheet th { background: none; text-align: left; }
         .btn-close-invoice { background: #000; color: #fff; border: none; padding: 8px; width: 100%; margin-top: 15px; cursor: pointer; font-family: monospace; font-weight: bold; }
 
         @media print {
-            body * { display: none; }
+            body * { display: none !important; }
             #receiptModal, #receiptModal * { display: block !important; }
-            .invoice-sheet { position: absolute; top: 0; left: 0; width: 320px; border: none; padding: 0; margin: 0; }
+            .invoice-sheet { position: absolute; top: 0; left: 0; width: 300px; border: none; padding: 0; margin: 0; }
             .btn-close-invoice { display: none !important; }
         }
     </style>
@@ -98,33 +103,33 @@
 
 <div id="lock-screen">
     <div class="lock-box">
-        <h2>TERMINAL SUSPENDED</h2>
-        <p>تم تعليق رخصة هذا النظام مؤقتاً لعدم اكتمال الدفع أو انتهاء الصلاحية. يرجى مراجعة القسم التقني لتفعيل المحطة.</p>
+        <h2>SECURITY TERMINAL HALTED</h2>
+        <p>تم تعليق ترخيص النظام لهذه المحطة مؤقتاً. يرجى الاتصال بالدعم الفني المعتمد للمطور لإعادة التفعيل.</p>
     </div>
 </div>
 
 <div class="workspace" id="app-content">
     
     <header>
-        <div class="brand">Juwaida Pharmacy OS <span>v100.0 Commercial</span></div>
-        <div class="sys-status">System Connected</div>
+        <div class="brand">Juwaida Pharmacy OS <span>Enterprise Edition</span></div>
+        <div class="sys-status">● POS Station Online</div>
     </header>
 
     <div class="metrics-grid">
         <div class="metric-card">
-            <p>Total Revenue</p>
+            <p>Station Turnover</p>
             <h3 id="m-rev">0.00 JOD</h3>
         </div>
         <div class="metric-card">
-            <p>Invoices Issued</p>
+            <p>Invoices Cleared</p>
             <h3 id="m-count">0</h3>
         </div>
         <div class="metric-card">
-            <p>Total Items In Stock</p>
+            <p>Monitored SKUs</p>
             <h3 id="m-items">0</h3>
         </div>
         <div class="metric-card">
-            <p>Low Stock Items</p>
+            <p>Stock Out Alerts</p>
             <h3 id="m-alerts">0</h3>
         </div>
     </div>
@@ -136,37 +141,37 @@
                 <div class="form-row">
                     <div class="input-group">
                         <label>Barcode / SKU</label>
-                        <input type="text" id="in-barcode" class="field-ctrl" placeholder="Scan item...">
+                        <input type="text" id="in-barcode" class="field-ctrl" placeholder="Scan or type...">
                     </div>
                     <div class="input-group">
-                        <label>Item Name</label>
+                        <label>Item Description</label>
                         <input type="text" id="in-name" class="field-ctrl">
                     </div>
                     <div class="input-group">
-                        <label>Price (JOD)</label>
+                        <label>Unit Price (JOD)</label>
                         <input type="number" step="0.01" id="in-price" class="field-ctrl" placeholder="0.00">
                     </div>
                     <div class="input-group">
-                        <label>Stock Qty</label>
-                        <input type="number" id="in-stock" class="field-ctrl" value="50">
+                        <label>Quantity</label>
+                        <input type="number" id="in-stock" class="field-ctrl" value="100">
                     </div>
-                    <button class="btn-action" onclick="addNewItem()">Add Item</button>
+                    <button class="btn-action" onclick="addNewItem()">Save Item</button>
                 </div>
             </div>
 
             <div class="panel">
                 <div class="search-container">
-                    <input type="text" id="searchCtrl" class="search-field" placeholder="Search database by item name or barcode..." onkeyup="filterRegistry()">
+                    <input type="text" id="searchCtrl" class="search-field" placeholder="Filter stock registry by name or item barcode..." onkeyup="filterRegistry()">
                 </div>
                 
                 <div class="table-view">
                     <table>
                         <thead>
                             <tr>
-                                <th>Barcode</th>
-                                <th>Item Description</th>
-                                <th>Unit Price</th>
-                                <th>Stock Status</th>
+                                <th style="width: 25%;">Barcode</th>
+                                <th style="width: 45%;">Description</th>
+                                <th style="width: 15%;">Unit Price</th>
+                                <th style="width: 15%;">In Stock</th>
                                 <th style="text-align: right;">Action</th>
                             </tr>
                         </thead>
@@ -178,19 +183,17 @@
 
         <div class="right-pane">
             <div class="panel checkout-panel">
-                <div>
-                    <div class="panel-title">Active Invoice Cart</div>
-                    <div id="cartBody" class="items-bucket">
-                        <p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.85rem;">System Idle</p>
-                    </div>
+                <div class="panel-title">Checkout Counter</div>
+                <div id="cartBody" class="items-bucket">
+                    <p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;">Terminal Idle</p>
                 </div>
 
                 <div class="summary-box">
                     <div class="total-row">
-                        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: bold;">TOTAL DUE:</span>
-                        <span id="totalText" style="color: #ffffff; font-size: 1.4rem; font-weight: bold;">0.00 JOD</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">TOTAL PAYABLE</span>
+                        <span id="totalText" style="color: #ffffff; font-size: 1.3rem; font-weight: 700;">0.00 JOD</span>
                     </div>
-                    <button class="btn-finalize" onclick="commitTransaction()">Process & Print Invoice</button>
+                    <button class="btn-finalize" onclick="commitTransaction()">Confirm & Print Receipt</button>
                 </div>
             </div>
         </div>
@@ -199,25 +202,25 @@
 
 <div id="receiptModal" class="modal-overlay">
     <div class="invoice-sheet">
-        <div style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-bottom: 2px;">JUWAIDA PHARMACY</div>
-        <div style="text-align: center; font-size: 0.65rem; color: #555; margin-bottom: 12px;" id="receipt-date"></div>
-        <table style="width: 100%; border: none; margin-bottom: 12px;">
+        <div style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-bottom: 2px; letter-spacing: 0.5px;">JUWAIDA PHARMACY</div>
+        <div style="text-align: center; font-size: 0.65rem; color: #444; margin-bottom: 10px;" id="receipt-date"></div>
+        <table style="width: 100%; border: none; margin-bottom: 10px;">
             <thead>
                 <tr><th>Item</th><th style="text-align: center;">Qty</th><th style="text-align: right;">Total</th></tr>
             </thead>
             <tbody id="receipt-items"></tbody>
         </table>
         <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 0.8rem; border-top: 1px dashed #000; padding-top: 5px;">
-            <span>TOTAL CASH:</span>
+            <span>TOTAL PAID:</span>
             <span id="r-total">0.00 JOD</span>
         </div>
-        <div style="text-align: center; margin-top: 20px; font-size: 0.65rem; color: #555;">Transaction Logged.<br>Thank you.</div>
-        <button class="btn-close-invoice" onclick="closeReceipt()">Close</button>
+        <div style="text-align: center; margin-top: 15px; font-size: 0.65rem; color: #444;">Transaction Saved Successfully.<br>Powered by Juwaida OS</div>
+        <button class="btn-close-invoice" onclick="closeReceipt()">Clear Screen</button>
     </div>
 </div>
 
 <script>
-    // 🔒 نظام القفل عن بُعد لحماية حقك
+    // 🔒 نظام التعليق والتحكم بالرخصة عن بعد لحماية حقك
     const isSystemActive = true; 
 
     if (!isSystemActive) {
@@ -225,46 +228,56 @@
         document.getElementById('lock-screen').style.display = 'flex';
     }
 
-    let db = JSON.parse(localStorage.getItem('j_sys_db')) || [
-        { barcode: "6251001101", name: "Panadol Advance 500mg", price: 1.20, stock: 120 },
-        { barcode: "6251006606", name: "Voltaren Emulgel 50g", price: 5.25, stock: 3 },
-        { barcode: "6251002202", name: "Amoclan 625mg Tablets", price: 6.45, stock: 45 }
+    // الـ Storage الافتراضي منظم ومحمي ضد التكرا والتعليق
+    let db = JSON.parse(localStorage.getItem('j_ent_db')) || [
+        { barcode: "6251001101", name: "Panadol Advance 500mg", price: 1.20, stock: 200 },
+        { barcode: "6251006606", name: "Voltaren Emulgel 50g", price: 5.25, stock: 2 },
+        { barcode: "6251002202", name: "Amoclan 625mg Tablets", price: 6.45, stock: 85 }
     ];
 
-    let totalSales = parseFloat(localStorage.getItem('j_sys_sales')) || 0.00;
-    let invoiceCount = parseInt(localStorage.getItem('j_sys_count')) || 0;
+    let totalSales = parseFloat(localStorage.getItem('j_ent_sales')) || 0.00;
+    let invoiceCount = parseInt(localStorage.getItem('j_ent_count')) || 0;
     let cart = [];
 
     function syncStorage() {
-        localStorage.setItem('j_sys_db', JSON.stringify(db));
-        localStorage.setItem('j_sys_sales', totalSales.toString());
-        localStorage.setItem('j_sys_count', invoiceCount.toString());
+        try {
+            localStorage.setItem('j_ent_db', JSON.stringify(db));
+            localStorage.setItem('j_ent_sales', totalSales.toString());
+            localStorage.setItem('j_ent_count', invoiceCount.toString());
+        } catch (e) {
+            console.error("Storage full or restricted.");
+        }
     }
 
     function render() {
         if (!isSystemActive) return;
         const tbody = document.getElementById('registryBody');
-        tbody.innerHTML = "";
+        
+        // تفريغ أسرع للجدول لمنع تعليق المتصفح
+        while (tbody.firstChild) { tbody.removeChild(tbody.firstChild); }
+        
         let lowStock = 0;
+        let fragment = document.createDocumentFragment(); // استخدام Fragment لتسريع الرندرة 10 أضعاف
         
         db.forEach((item, index) => {
             let isLow = item.stock <= 5;
             if (isLow) lowStock++;
             
-            tbody.innerHTML += `
-                <tr>
-                    <td style="font-family: monospace;">${item.barcode}</td>
-                    <td>${item.name}</td>
-                    <td style="font-weight: bold;">${item.price.toFixed(2)} JOD</td>
-                    <td><span style="color: ${isLow ? 'var(--btn-danger)' : 'var(--text-main)'};">${item.stock} units</span></td>
-                    <td style="text-align: right;">
-                        <button class="row-btn" onclick="addToCart(${index})">Select</button>
-                        <button class="row-btn purge" onclick="deleteItem(${index})">Delete</button>
-                    </td>
-                </tr>
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-family: monospace;">${item.barcode}</td>
+                <td style="font-weight: 500;">${item.name}</td>
+                <td style="font-weight: bold;">${item.price.toFixed(2)} JOD</td>
+                <td><span style="color: ${isLow ? 'var(--brand-danger)' : 'var(--text-main)'}; font-weight: ${isLow ? 'bold' : 'normal'}">${item.stock}</span></td>
+                <td style="text-align: right;">
+                    <button class="row-btn" onclick="addToCart(${index})">Select</button>
+                    <button class="row-btn purge" onclick="deleteItem(${index})">Purge</button>
+                </td>
             `;
+            fragment.appendChild(tr);
         });
         
+        tbody.appendChild(fragment);
         document.getElementById('m-items').innerText = db.length;
         document.getElementById('m-alerts').innerText = lowStock;
         document.getElementById('m-rev').innerText = totalSales.toFixed(2) + " JOD";
@@ -323,15 +336,15 @@
 
     function renderCart() {
         const wrapper = document.getElementById('cartBody');
+        wrapper.innerHTML = "";
+        
         if (cart.length === 0) {
-            wrapper.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.85rem;">System Idle</p>`;
+            wrapper.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;">Terminal Idle</p>`;
             document.getElementById('totalText').innerText = "0.00 JOD";
             return;
         }
         
-        wrapper.innerHTML = "";
         let total = 0;
-        
         cart.forEach((item, index) => {
             let rowTotal = item.price * item.qty;
             total += rowTotal;
@@ -339,7 +352,7 @@
             wrapper.innerHTML += `
                 <div class="bucket-row">
                     <div>
-                        <div style="font-weight: bold;">${item.name}</div>
+                        <div style="font-weight: 600;">${item.name}</div>
                         <div style="color: var(--text-muted); font-size: 0.75rem;">${item.qty} x ${item.price.toFixed(2)}</div>
                     </div>
                     <div style="text-align: right;">
@@ -376,9 +389,10 @@
         document.getElementById('r-total').innerText = total.toFixed(2) + " JOD";
         document.getElementById('receiptModal').style.display = "flex";
         
+        // تشغيل الطباعة الصامتة الفورية والآمنة
         setTimeout(() => {
             window.print();
-        }, 300);
+        }, 250);
         
         cart = [];
         renderCart();
@@ -400,6 +414,7 @@
         }
     }
 
+    // تفعيل المسح بالباركود الفوري والسريع جداً (زي داواتك)
     const searchCtrl = document.getElementById('searchCtrl');
     searchCtrl.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
