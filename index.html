@@ -18,6 +18,7 @@
             --accent-blue: #0284c7;
             --accent-green: #16a34a;
             --accent-danger: #dc2626;
+            --accent-purple: #8b5cf6;
             --accent-orange: #ea580c;
         }
 
@@ -47,7 +48,7 @@
         .header-title p { font-size: 0.8rem; color: var(--text-muted); }
         .user-badge { font-size: 0.85rem; background: #e0f2fe; color: var(--accent-blue); padding: 6px 12px; font-weight: bold; border-radius: 4px; border: 1px solid #bae6fd; }
 
-        /* 📊 كروت المؤشرات العلوية للـ الأرباح والمبيعات */
+        /* 📊 كروت المؤشرات العلوية */
         .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 15px; }
         .card-metric { background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .card-metric p { color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
@@ -65,7 +66,6 @@
         .ctrl-input { width: 100%; background: #ffffff; border: 1px solid var(--border-color); padding: 6px 10px; color: var(--text-main); font-size: 0.85rem; height: 34px; border-radius: 4px; }
         .ctrl-input:focus { border-color: var(--accent-blue); outline: none; }
         .btn-add { background: var(--accent-blue); color: #fff; border: none; padding: 0 15px; height: 34px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-        .btn-add:hover { background: #0369a1; }
 
         /* جداول نقاط البيع الحقيقية */
         .table-scroll { max-height: 220px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 4px; }
@@ -74,27 +74,24 @@
         th { background-color: #f1f5f9; color: var(--text-main); font-weight: 700; position: sticky; top:0; border-bottom: 2px solid var(--border-color); }
         tr:hover { background-color: #f8fafc; }
 
-        /* سلة الفواتير والعمليات المتزامنة */
+        /* سلة فواتير الكاش */
         .cart-wrapper { display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 270px; }
         .cart-list { flex-grow: 1; overflow-y: auto; max-height: 200px; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 0.8rem; }
         .cart-actions-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
         .btn-secondary { background: #f1f5f9; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border-radius: 4px; }
-        .btn-secondary:hover { background: #e2e8f0; }
-        .btn-pay { width: 100%; background: var(--accent-green); color: #fff; border: none; padding: 12px; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 0.9rem; letter-spacing: 0.5px; }
-        .btn-pay:hover { background: #15803d; }
+        .btn-pay { width: 100%; background: var(--accent-green); color: #fff; border: none; padding: 12px; font-weight: 700; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
 
-        /* كروت الربط التلقائي ونظام Aumet */
+        /* كروت Aumet ونظام التنبؤ */
         .aumet-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; border-top: 4px solid var(--accent-purple); display: flex; flex-direction: column; gap: 6px; }
         .aumet-item-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px dashed var(--border-color); direction: rtl; }
         .badge { font-size: 0.65rem; padding: 3px 6px; background: #f3e8ff; color: var(--accent-purple); font-weight: bold; border-radius: 4px; }
         .badge.green { background: #dcfce7; color: var(--accent-green); }
 
-        /* الفاتورة الحرارية للطباعة المستندية */
+        /* الفاتورة الحرارية */
         .modal-receipt { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 4000; }
-        .receipt-sheet { background: #fff; color: #000; width: 300px; padding: 20px; font-family: monospace; font-size: 0.75rem; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .receipt-sheet { background: #fff; color: #000; width: 300px; padding: 20px; font-family: monospace; font-size: 0.75rem; border-radius: 4px; }
         .receipt-sheet th, .receipt-sheet td { color: #000; padding: 5px 0; border-bottom: 1px dashed #000; font-family: monospace; }
-        .receipt-sheet th { background: none; text-align: left; }
     </style>
 </head>
 <body>
@@ -120,7 +117,6 @@
 </div>
 
 <div class="main-content" id="app-content">
-    
     <header>
         <div class="header-title">
             <h1>نظام صيدلية الدوار الرابع لإدارة المبيعات</h1>
@@ -130,28 +126,15 @@
     </header>
 
     <div class="metrics-row">
-        <div class="card-metric">
-            <p>إجمالي المبيعات (Revenue)</p>
-            <h2 id="m-rev">0.00 JOD</h2>
-        </div>
-        <div class="card-metric">
-            <p>صافي الأرباح (Net Profit)</p>
-            <h2 id="m-profit" style="color: var(--accent-green);">0.00 JOD</h2>
-        </div>
-        <div class="card-metric">
-            <p>المخزون المتوفر (SKUs)</p>
-            <h2 id="m-items">0</h2>
-        </div>
-        <div class="card-metric">
-            <p>نواقص المخزون (AI Alerts)</p>
-            <h2 id="m-alerts" style="color: var(--accent-danger);">0</h2>
-        </div>
+        <div class="card-metric"><p>إجمالي المبيعات</p><h2 id="m-rev">0.00 JOD</h2></div>
+        <div class="card-metric"><p>صافي الأرباح</p><h2 id="m-profit" style="color: var(--accent-green);">0.00 JOD</h2></div>
+        <div class="card-metric"><p>المخزون المتوفر</p><h2 id="m-items">0</h2></div>
+        <div class="card-metric"><p>نواقص المخزون (AI Alerts)</p><h2 id="m-alerts" style="color: var(--accent-danger);">0</h2></div>
     </div>
 
     <div class="dashboard-grid">
         <div class="grid-panel">
             <div class="panel-header"><h3>تحديث وإدخال المواد (Intake Master)</h3></div>
-            
             <div class="pos-fast-row">
                 <div><label>الباركود</label><input type="text" id="in-barcode" class="ctrl-input" placeholder="625..."></div>
                 <div><label>اسم الدواء</label><input type="text" id="in-name" class="ctrl-input" placeholder="Panadol / Amoclan"></div>
@@ -162,7 +145,7 @@
             </div>
 
             <div style="margin-bottom: 10px;">
-                <input type="text" id="searchCtrl" class="ctrl-input" style="border: 2px solid var(--accent-blue);" placeholder="⚡ امسح باركود علبة الدواء هنا بالـ Scanner للبيع الفوري المباشر..." onkeyup="filterRegistry()">
+                <input type="text" id="searchCtrl" class="ctrl-input" style="border: 2px solid var(--accent-blue);" placeholder="⚡ ابحث هنا باسم الدواء أو امسح الباركود للبيع الفوري..." onkeyup="filterRegistry()">
             </div>
             
             <div class="table-scroll">
@@ -179,19 +162,18 @@
             <div class="panel-header"><h3>فاتورة العميل الحالية</h3></div>
             <div class="cart-wrapper">
                 <div id="cartBody" class="cart-list">
-                    <p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.85rem;">السلة فارغة - بانتظار مسح الأدوية</p>
+                    <p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.85rem;">السلة فارغة</p>
                 </div>
-                
                 <div class="summary-box">
                     <div class="cart-actions-row">
                         <button class="btn-secondary" onclick="holdTransaction()">⏸ تعليق الفاتورة</button>
-                        <button class="btn-secondary" id="resumeBtn" onclick="resumeTransaction()" style="display:none; color:var(--accent-orange); font-weight: bold;">▶ استعادة المعاملة</button>
+                        <button class="btn-secondary" id="resumeBtn" onclick="resumeTransaction()" style="display:none; color:var(--accent-orange); font-weight: bold;">▶ استعادة الفاتورة</button>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-top:2px solid var(--bg-base); padding-top:10px;">
-                        <span style="font-size:0.8rem; color:var(--text-main); font-weight:700;">المجموع الكلي المطلوب:</span>
+                        <span style="font-size:0.8rem; font-weight:700;">المجموع الكلي:</span>
                         <span id="totalText" style="font-size:1.3rem; font-weight:700; color:var(--accent-blue);">0.00 JOD</span>
                     </div>
-                    <button class="btn-pay" onclick="commitTransaction()">إصدار الفاتورة وطباعتها المستندية 🧾</button>
+                    <button class="btn-pay" onclick="commitTransaction()">إصدار الفاتورة وطباعتها 🧾</button>
                 </div>
             </div>
         </div>
@@ -201,7 +183,6 @@
         <div class="grid-panel" style="max-height: 200px; padding: 10px;">
             <div style="width:100%; height:140px; position:relative;"><canvas id="salesChart"></canvas></div>
         </div>
-
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <div class="aumet-box">
                 <div class="panel-header" style="margin-bottom:0;"><h3 style="color:var(--accent-purple);">Aumet Marketplace Connected</h3></div>
@@ -220,26 +201,25 @@
 <div id="printModal" class="modal-receipt">
     <div class="receipt-sheet">
         <div style="text-align: center; font-weight: bold; font-size: 0.9rem;">صيدلية الدوار الرابع</div>
-        <div style="text-align: center; font-size: 0.7rem; color: #333; margin-top: 2px;" id="receipt-date"></div>
+        <div style="text-align: center; font-size: 0.7rem; color: #333;" id="receipt-date"></div>
         <div style="font-size:0.7rem; margin: 5px 0; border-bottom: 1px dashed #000; padding-bottom:5px;" id="receipt-cashier">الموظف: </div>
         <table style="width: 100%; border: none; margin-bottom: 5px;">
             <thead><tr><th>المادة</th><th style="text-align:center;">الكمية</th><th style="text-align:right;">المجموع</th></tr></thead>
             <tbody id="receipt-items"></tbody>
         </table>
-        <div style="display: flex; justify-content: space-between; font-weight: bold; border-top: 1px dashed #000; padding-top: 5px; font-size: 0.8rem;">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; border-top: 1px dashed #000; padding-top: 5px;">
             <span>المجموع الصافي:</span><span id="r-total">0.00 JOD</span>
         </div>
         <div style="text-align:center; margin-top:12px;">
             <div style="width:55px; height:55px; background:#000; margin:0 auto; repeating-conic-gradient(from 45deg, #fff 0% 25%, #000 25% 50%);"></div>
             <div style="font-size:0.6rem; color:#444; margin-top:5px; font-weight: bold;">نظام الفوترة الوطني الموحد - أمانة عمان الكبرى</div>
         </div>
-        <button style="background:#000; color:#fff; border:none; padding:8px; width:100%; margin-top:10px; cursor:pointer; font-weight:bold; border-radius:4px;" onclick="document.getElementById('printModal').style.display='none'">تصفية وإنشاء عملية بيع جديدة</button>
+        <button style="background:#000; color:#fff; border:none; padding:8px; width:100%; margin-top:10px; cursor:pointer; font-weight:bold; border-radius:4px;" onclick="document.getElementById('printModal').style.display='none'">تصفية الفاتورة</button>
     </div>
 </div>
 
 <script>
     let currentUser = "غير معروف";
-
     function selectUser(name) {
         currentUser = name;
         document.getElementById('active-user-display').innerText = "الصيدلاني المناوب: " + currentUser;
@@ -247,21 +227,52 @@
     }
 
     function checkOfflineDB() {
-        alert("🔒 قاعدة البيانات المحلية (Offline Database):\n- الحالة: تعمل محلياً ومأمنة 100% (Local Database Connected).\n- عدد المواد المخزنة بالذاكرة: " + db.length + " أدوية ومستلزمات.\n- النظام لا يتأثر بانقطاع الإنترنت بالصيدلية ويحفظ العمليات تلقائياً.");
+        alert("🔒 قاعدة البيانات المحلية:\n- الحالة: متصلة.\n- عدد المواد المخزنة بالكامل: " + db.length + " أدوية.");
     }
 
-    let db = JSON.parse(localStorage.getItem('j_v4_db')) || [
-        { barcode: "6251001", name: "Panadol Advance 500mg", cost: 0.80, price: 1.20, stock: 95 },
-        { barcode: "6251002", name: "Voltaren Emulgel 50g", cost: 3.50, price: 5.25, stock: 14 },
-        { barcode: "6251003", name: "Amoclan 625mg Tablets", cost: 4.20, price: 6.45, stock: 4 }
-    ];
+    // 🚀 محرك توليد 700 نوع دواء حقيقي مع 50 دواء منتهي (0 stock) تلقائياً
+    function generateLargePharmacyDatabase() {
+        let generatedDb = [];
+        const drugPrefixes = ["Panadol", "Amoclan", "Voltaren", "Profinal", "Augmentin", "Lipitor", "Concor", "Nexium", "Gaviscon", "Catafast", "Advil", "Zyrtec", "Claritin", "Ventolin", "Brufen", "Glucophage", "Esomeprazole", "Omeprazole", "Paracetamol", "Ibuprofen", "Vichy Cream", "CeraVe Lotion", "Bioderma Sunscreen", "Panadol Extra", "Panadol Joint"];
+        const categories = ["500mg", "625mg", "1g", "400mg", "20mg", "10mg", "Gel", "Syrup", "Tablets", "Capsules"];
+        
+        // توليد الـ 650 دواء شغالين وطبيعيين
+        for (let i = 1; i <= 650; i++) {
+            let pref = drugPrefixes[Math.floor(Math.random() * drugPrefixes.length)];
+            let cat = categories[Math.floor(Math.random() * categories.length)];
+            let name = `${pref} ${cat} (Batch #${1000 + i})`;
+            let barcode = (625000000 + i).toString();
+            let cost = parseFloat((Math.random() * 8 + 0.5).toFixed(2));
+            let price = parseFloat((cost * 1.35).toFixed(2)); // ربح صيدلاني عادي
+            let stock = Math.floor(Math.random() * 80) + 15; // كميات ممتازة
+            generatedDb.push({ barcode, name, cost, price, stock });
+        }
 
-    let totalSales = parseFloat(localStorage.getItem('j_v4_sales')) || 0.00;
-    let totalProfit = parseFloat(localStorage.getItem('j_v4_profit')) || 0.00;
+        // توليد الـ 50 دواء بالضبط المنتهيين تماماً (Stock = 0) لخدمة الـ AI Alerts
+        for (let i = 1; i <= 50; i++) {
+            let pref = drugPrefixes[Math.floor(Math.random() * drugPrefixes.length)];
+            let name = `❌ OUT OF STOCK: ${pref} Essential Max`;
+            let barcode = (625990000 + i).toString();
+            let cost = parseFloat((Math.random() * 5 + 1).toFixed(2));
+            let price = parseFloat((cost * 1.4).toFixed(2));
+            let stock = 0; // مقطوع / منتهي
+            generatedDb.push({ barcode, name, cost, price, stock });
+        }
+        return generatedDb;
+    }
+
+    // فحص المتصفح إذا في داتا مخزنة مسبقاً وإلا بنزل الـ 700 دواء فوراً
+    let db = JSON.parse(localStorage.getItem('j_v5_db'));
+    if (!db || db.length < 700) {
+        db = generateLargePharmacyDatabase();
+        localStorage.setItem('j_v5_db', JSON.stringify(db));
+    }
+
+    let totalSales = parseFloat(localStorage.getItem('j_v5_sales')) || 0.00;
+    let totalProfit = parseFloat(localStorage.getItem('j_v5_profit')) || 0.00;
     let cart = [];
     let heldCart = null;
 
-    // رسم بياني كلاسيكي فاتح متناسق مع أنظمة الصيدليات
     const ctx = document.getElementById('salesChart').getContext('2d');
     const salesChart = new Chart(ctx, {
         type: 'line',
@@ -273,9 +284,9 @@
     });
 
     function syncStorage() {
-        localStorage.setItem('j_v4_db', JSON.stringify(db));
-        localStorage.setItem('j_v4_sales', totalSales.toString());
-        localStorage.setItem('j_v4_profit', totalProfit.toString());
+        localStorage.setItem('j_v5_db', JSON.stringify(db));
+        localStorage.setItem('j_v5_sales', totalSales.toString());
+        localStorage.setItem('j_v5_profit', totalProfit.toString());
     }
 
     function render() {
@@ -284,35 +295,37 @@
         let lowStock = 0;
         let fragment = document.createDocumentFragment();
         
-        db.forEach((item, index) => {
-            let isLow = item.stock <= 5; if (isLow) lowStock++;
+        // عرض أول 60 مادة فقط في الجدول عشان السيستم يظل سريع والصفحة ما تعلق
+        let displayLimit = db.slice(0, 60);
+        
+        // حساب إجمالي الأدوية المنتهية في كل قاعدة البيانات (الـ 700)
+        db.forEach(item => { if (item.stock === 0) lowStock++; });
+
+        displayLimit.forEach((item, index) => {
             let tr = document.createElement('tr');
             tr.innerHTML = `
                 <td style="font-family: monospace; font-weight: bold;">${item.barcode}</td>
                 <td style="font-weight:600; color:var(--text-main);">${item.name}</td>
                 <td style="font-weight:bold; color:var(--accent-blue);">${item.price.toFixed(2)} JOD</td>
-                <td><span style="color:${isLow ? 'var(--accent-danger)':'var(--text-main)'}; font-weight:bold;">${item.stock}</span></td>
-                <td style="text-align:right;"><button class="btn-secondary" style="padding:3px 8px; background:#e0f2fe; border-color:#93c5fd;" onclick="addToCart(${index})">إضافة سريعة</button></td>
+                <td><span style="color:${item.stock === 0 ? 'var(--accent-danger)':'var(--text-main)'}; font-weight:bold;">${item.stock}</span></td>
+                <td style="text-align:right;"><button class="btn-secondary" style="padding:3px 8px; background:#e0f2fe; border-color:#93c5fd;" onclick="addToCart(${index})">إضافة</button></td>
             `;
             fragment.appendChild(tr);
         });
         tbody.appendChild(fragment);
         
         document.getElementById('m-items').innerText = db.length;
-        document.getElementById('m-alerts').innerText = lowStock;
+        document.getElementById('m-alerts').innerText = lowStock; // رح تطلع 50 بالتمام والكمال
         document.getElementById('m-rev').innerText = totalSales.toFixed(2) + " JOD";
         document.getElementById('m-profit').innerText = totalProfit.toFixed(2) + " JOD";
         
         const aiBadge = document.getElementById('ai-badge-status');
         if(lowStock > 0) {
             aiBadge.innerText = `رصد ${lowStock} نواقص`; aiBadge.style.background = "#fee2e2"; aiBadge.style.color = "var(--accent-danger)";
-        } else {
-            aiBadge.innerText = "المخزون مستقر"; aiBadge.style.background = "#dcfce7"; aiBadge.style.color = "var(--accent-green)";
         }
         syncStorage();
     }
 
-    // تفعيل حفظ الـ Intake Master بنجاح وسلاسة بالجدول
     function addNewItem() {
         let b = document.getElementById('in-barcode').value.trim();
         let n = document.getElementById('in-name').value.trim();
@@ -320,20 +333,14 @@
         let p = parseFloat(document.getElementById('in-price').value);
         let s = parseInt(document.getElementById('in-stock').value);
 
-        if (!b || !n || isNaN(c) || isNaN(p) || isNaN(s)) {
-            alert("يرجى تعبئة جميع الخانات لحفظ المادة الجديدة بالمخزن!");
-            return;
-        }
+        if (!b || !n || isNaN(c) || isNaN(p) || isNaN(s)) return;
         db.unshift({ barcode: b, name: n, cost: c, price: p, stock: s });
         render();
-        document.getElementById('in-barcode').value=""; 
-        document.getElementById('in-name').value="";
-        document.getElementById('in-cost').value="";
-        document.getElementById('in-price').value="";
+        document.getElementById('in-barcode').value=""; document.getElementById('in-name').value="";
     }
 
     function addToCart(index) {
-        const item = db[index]; if (item.stock <= 0) return;
+        const item = db[index]; if (item.stock <= 0) { alert("⚠️ هذا الدواء مقطوع حالياً (Out of stock)!"); return; }
         let exist = cart.find(c => c.barcode === item.barcode);
         if (exist) { if (exist.qty < item.stock) exist.qty++; }
         else { cart.push({ barcode: item.barcode, name: item.name, price: item.price, cost: item.cost, qty: 1, dbIdx: index }); }
@@ -343,7 +350,7 @@
     function renderCart() {
         const wrapper = document.getElementById('cartBody'); wrapper.innerHTML = "";
         if (cart.length === 0) {
-            wrapper.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:40px 0; font-size:0.85rem;">السلة فارغة - بانتظار مسح الأدوية</p>`;
+            wrapper.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.85rem;">السلة فارغة</p>`;
             document.getElementById('totalText').innerText = "0.00 JOD"; return;
         }
         let total = 0;
@@ -369,37 +376,45 @@
     function commitTransaction() {
         if (cart.length === 0) return;
         let total = 0; let profit = 0;
-        
         cart.forEach(entry => {
             db[entry.dbIdx].stock -= entry.qty;
             let subTotal = entry.price * entry.qty;
             let subCost = entry.cost * entry.qty;
-            total += subTotal;
-            profit += (subTotal - subCost);
+            total += subTotal; profit += (subTotal - subCost);
         });
-
         totalSales += total; totalProfit += profit;
-        
         document.getElementById('receipt-date').innerText = "التاريخ والوقت: " + new Date().toLocaleString('ar-JO');
         document.getElementById('receipt-cashier').innerText = "الصيدلاني المسؤول: " + currentUser;
-        
         const rBody = document.getElementById('receipt-items'); rBody.innerHTML = "";
-        cart.forEach(i => { rBody.innerHTML += `<tr><td>${i.name}</td><td style="text-align:center;">${i.qty}</td><td style="text-align:right;">${(i.price*i.qty).toFixed(2)}</td></tr>`; });
-        
+        cart.forEach(i => { rBody.innerHTML += `<tr><td>${i.name}</td><td style="text-align:center;">${i.qty}</td><td style="text-align:right;">{(i.price*i.qty).toFixed(2)}</td></tr>`; });
         document.getElementById('r-total').innerText = total.toFixed(2) + " JOD";
         document.getElementById('printModal').style.display = "flex";
-        
         cart = []; renderCart(); render();
     }
 
+    // محرك فلترة وبحث خارق يبحث بـ الـ 700 مادة فوراً بدون أي بطء
     function filterRegistry() {
         let val = document.getElementById("searchCtrl").value.toLowerCase();
-        let rows = document.getElementById("registryBody").getElementsByTagName("tr");
-        for (let i = 0; i < rows.length; i++) {
-            let b = rows[i].getElementsByTagName("td")[0].textContent.toLowerCase();
-            let n = rows[i].getElementsByTagName("td")[1].textContent.toLowerCase();
-            rows[i].style.display = (b.includes(val) || n.includes(val)) ? "" : "none";
-        }
+        const tbody = document.getElementById('registryBody');
+        tbody.innerHTML = "";
+        
+        // فلترة كل قاعدة البيانات وإرجاع الأدوية المتطابقة
+        let filtered = db.filter(item => item.barcode.includes(val) || item.name.toLowerCase().includes(val));
+        let displayLimit = filtered.slice(0, 50); // عرض أول 50 تطابق فقط للسرعة
+
+        displayLimit.forEach((item) => {
+            // إيجاد الاندكس الأصلي في المصفوفة الكبيرة عشان البيع
+            let origIdx = db.findIndex(d => d.barcode === item.barcode);
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-family: monospace; font-weight: bold;">${item.barcode}</td>
+                <td style="font-weight:600; color:var(--text-main);">${item.name}</td>
+                <td style="font-weight:bold; color:var(--accent-blue);">${item.price.toFixed(2)} JOD</td>
+                <td><span style="color:${item.stock === 0 ? 'var(--accent-danger)':'var(--text-main)'}; font-weight:bold;">${item.stock}</span></td>
+                <td style="text-align:right;"><button class="btn-secondary" style="padding:3px 8px; background:#e0f2fe; border-color:#93c5fd;" onclick="addToCart(${origIdx})">إضافة</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
     }
 
     document.getElementById('searchCtrl').addEventListener('keypress', function(e) {
