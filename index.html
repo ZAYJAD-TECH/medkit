@@ -1,236 +1,280 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraMed Enterprise OS v4.2</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#080e1e">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #080e1e;
+            --bg-card: #111a33;
+            --accent-cyan: #00f5d4;
+            --accent-blue: #00b4d8;
+            --neon-red: #ff3366;
+            --neon-green: #00f5a0;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --border-line: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-primary); padding: 25px; overflow-x: hidden; }
+        
+        .dashboard-container { max-width: 1400px; margin: 0 auto; }
+        
+        /* Modern Glassmorphic Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(17, 26, 51, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-line);
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+        
+        .brand { display: flex; align-items: center; gap: 15px; }
+        .brand-logo { font-size: 2rem; color: var(--accent-cyan); animation: pulse 2s infinite; }
+        .brand-title h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+        .brand-title p { font-size: 0.8rem; color: var(--text-secondary); }
+        
+        /* High-End Analytics Counter Cards */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-line);
+            padding: 25px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-blue);
+        }
+        .metric-card.alert::before { background: var(--neon-red); }
+        .metric-card.revenue::before { background: var(--neon-green); }
+        
+        .metric-info p { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; }
+        .metric-info h3 { font-size: 2rem; font-weight: 700; margin-top: 5px; font-family: monospace; }
+        .metric-icon { font-size: 2.2rem; color: rgba(255,255,255,0.1); }
+        
+        /* Advanced Control & Search Bar */
+        .control-bar { position: relative; margin-bottom: 25px; }
+        .search-input {
+            width: 100%;
+            padding: 18px 20px 18px 55px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-line);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            border-color: var(--accent-cyan);
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.15);
+        }
+        .control-bar i { position: absolute; left: 22px; top: 22px; color: var(--accent-cyan); font-size: 1.2rem; }
+        
+        /* Enterprise Master Data Table */
+        .table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border-line);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 18px 24px; border-bottom: 1px solid var(--border-line); }
+        th { background: rgba(255,255,255,0.02); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        tr:hover { background: rgba(255, 255, 255, 0.01); }
+        
+        .barcode-txt { font-family: monospace; color: var(--accent-blue); font-weight: 500; }
+        .med-name { font-weight: 600; font-size: 1.05rem; color: #fff; }
+        .price-txt { font-family: monospace; font-weight: 700; color: var(--neon-green); font-size: 1.1rem; }
+        .stock-txt { font-weight: 700; font-size: 1.1rem; }
+        
+        /* Status Systems badges */
+        .status-badge { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+        .status-badge.active { background: rgba(0, 245, 160, 0.1); color: var(--neon-green); }
+        .status-badge.critical { background: rgba(255, 51, 102, 0.1); color: var(--neon-red); animation: flash-glow 1.5s infinite; }
+        
+        @keyframes flash-glow { 50% { opacity: 0.5; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        
+        /* Terminal Action Buttons */
+        .btn-action { background: rgba(255,255,255,0.02); border: 1px solid var(--border-line); color: #fff; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s ease; }
+        .btn-action:hover { background: var(--accent-blue); border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 180, 216, 0.3); }
+        .btn-action.sell:hover { background: var(--neon-red); border-color: var(--neon-red); box-shadow: 0 0 15px rgba(255, 51, 102, 0.3); }
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;ZayJad MedKit | Pharmacy Inventory Management System&lt;/title&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="theme-color" content="#020617"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--midnight: #020617;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--obsidian: #0f172a;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--electric-blue: #0ea5e9;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--danger-red: #ef4444;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--success-green: #22c55e;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-silver: #cbd5e1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body { background-color: var(--midnight); color: #fff; padding: 30px; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container { max-width: 1200px; margin: 0 auto; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>header {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid rgba(255,255,255,0.1);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 20px;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1 span { color: var(--electric-blue); }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stats-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: var(--obsidian);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(255,255,255,0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-card i { font-size: 2rem; color: var(--electric-blue); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-card.alert i { color: var(--danger-red); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-box-container { position: relative; margin-bottom: 25px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-box {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 18px 20px 18px 50px;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: var(--obsidian);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(14, 165, 233, 0.2);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #fff;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1rem;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-box:focus { border-color: var(--electric-blue); outline: none; box-shadow: 0 0 15px rgba(14, 165, 233, 0.2); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.search-box-container i { position: absolute; left: 20px; top: 22px; color: var(--electric-blue); font-size: 1.2rem; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>table { width: 100%; border-collapse: collapse; background: var(--obsidian); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>th, td { padding: 18px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>th { background: rgba(14, 165, 233, 0.1); color: var(--electric-blue); font-weight: 700; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.badge { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.badge.instock { background: rgba(34, 197, 94, 0.15); color: var(--success-green); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.badge.lowstock { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); animation: blink 2s infinite; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes blink { 50% { opacity: 0.6; } }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.action-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; margin-right: 5px; font-size: 0.9rem; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.action-btn:hover { background: var(--electric-blue); border-color: var(--electric-blue); color: #fff; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.sell-btn:hover { background: var(--danger-red); border-color: var(--danger-red); }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.price-text { font-family: monospace; font-size: 1.1rem; color: #fff; font-weight: bold; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;ZayJad &lt;span&gt;MedKit App 💊&lt;/span&gt;&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="text-align: right;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p style="color: var(--success-green); font-weight: 600;"&gt;&lt;i class="fa-solid fa-shield-halved"&gt;&lt;/i&gt; Local Encrypted Storage&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p style="color: var(--text-silver); font-size: 0.85rem;"&gt;Jordan National Medicine Database 2026&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stats-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p style="color: var(--text-silver);"&gt;Total Medicine SKU&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 id="totalItems" style="font-size: 2rem; margin-top: 5px;"&gt;0&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;i class="fa-solid fa-pills"&gt;&lt;/i&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-card alert"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p style="color: var(--text-silver);"&gt;Critical Stock Alerts&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 id="alertItems" style="font-size: 2rem; margin-top: 5px; color: var(--danger-red);"&gt;0&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;i class="fa-solid fa-triangle-exclamation"&gt;&lt;/i&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="search-box-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;i class="fa-solid fa-magnifying-glass"&gt;&lt;/i&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;input type="text" id="searchInput" class="search-box" placeholder="Search by medicine name, barcode, or active formula..." onkeyup="searchMedicine()"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;table&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;th&gt;Barcode&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;th&gt;Medicine Name &amp; Formula&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;th&gt;Official Price (JOD)&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;th&gt;Current Stock&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;th&gt;Status&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;th&gt;Stock Control (POS Actions)&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tbody id="inventoryBody"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/table&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>// Real data simulation for top Jordanian Pharmacy stocks and official pricing</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let inventory = [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251001101", name: "Panadol Advance (500mg)", price: 1.20, stock: 140, minLimit: 20 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251002202", name: "Amoclan (625mg) Antibiotic", price: 6.45, stock: 15, minLimit: 10 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251003303", name: "Profinal (400mg) Ibuprofen", price: 1.15, stock: 4, minLimit: 12 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251004404", name: "Lipitor (20mg) Cholesterol", price: 24.30, stock: 35, minLimit: 5 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251005505", name: "Ventolin Inhaler", price: 4.80, stock: 2, minLimit: 8 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251006606", name: "Voltaren Emulgel (50g)", price: 5.25, stock: 50, minLimit: 15 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251007707", name: "Gupison (5mg) Prednisolone", price: 1.40, stock: 8, minLimit: 10 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251008808", name: "Omeprazole (20mg) Gastric", price: 3.10, stock: 65, minLimit: 15 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251009909", name: "Augmentin (1g) Antibiotic", price: 9.80, stock: 22, minLimit: 8 },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{ barcode: "6251010010", name: "Excedrin Migraine Tablets", price: 2.75, stock: 3, minLimit: 10 }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function renderTable() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const tbody = document.getElementById('inventoryBody');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>tbody.innerHTML = "";</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>let alertCount = 0;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>inventory.forEach((item, index) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let isLow = item.stock &lt;= item.minLimit;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (isLow) alertCount++;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>let statusBadge = isLow<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>? `&lt;span class="badge lowstock"&gt;&lt;i class="fa-solid fa-triangle-exclamation"&gt;&lt;/i&gt; Low Stock&lt;/span&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">                </span>: `&lt;span class="badge instock"&gt;&lt;i class="fa-solid fa-circle-check"&gt;&lt;/i&gt; In Stock&lt;/span&gt;`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>tbody.innerHTML += `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;td style="color: var(--text-silver); font-family: monospace; font-size: 0.95rem;"&gt;${item.barcode}&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;td style="font-weight: 600; font-size: 1.05rem;"&gt;${item.name}&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;td class="price-text"&gt;${item.price.toFixed(2)} JOD&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;td style="font-size: 1.1rem; font-weight: 700; color: ${isLow ? 'var(--danger-red)' : '#fff'}"&gt;${item.stock} units&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;td&gt;${statusBadge}&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="action-btn" onclick="updateStock(${index}, 1)"&gt;&lt;i class="fa-solid fa-plus"&gt;&lt;/i&gt; Restock&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="action-btn sell-btn" onclick="updateStock(${index}, -1)"&gt;&lt;i class="fa-solid fa-cart-shopping"&gt;&lt;/i&gt; Sell Unit&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('totalItems').innerText = inventory.length;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('alertItems').innerText = alertCount;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateStock(index, amount) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (inventory[index].stock + amount &gt;= 0) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>inventory[index].stock += amount;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>renderTable();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function searchMedicine() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let input = document.getElementById("searchInput").value.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let rows = document.getElementById("inventoryBody").getElementsByTagName("tr");</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>for (let i = 0; i &lt; rows.length; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let nameColumn = rows[i].getElementsByTagName("td")[1];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>let barcodeColumn = rows[i].getElementsByTagName("td")[0];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (nameColumn || barcodeColumn) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>let nameText = nameColumn.textContent || nameColumn.innerText;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>let barcodeText = barcodeColumn.textContent || barcodeColumn.innerText;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (nameText.toLowerCase().indexOf(input) &gt; -1 || barcodeText.toLowerCase().indexOf(input) &gt; -1) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>rows[i].style.display = "";</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>rows[i].style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>renderTable();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if ('serviceWorker' in navigator) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>navigator.serviceWorker.register('data:text/javascript;base64,Y29uc29sZS5sb2coJ1NlcnZpY2UgV29ya2VyIFJlZ2lzdGVyZWQnKTs=');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div class="dashboard-container">
+    <header>
+        <div class="brand">
+            <div class="brand-logo"><i class="fa-solid fa-circle-h"></i></div>
+            <div class="brand-title">
+                <h1>AuraMed <span>OS Enterprise</span></h1>
+                <p>Advanced Pharmacy ERP Core Terminal • Secure Local Database</p>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <p style="color: var(--accent-cyan); font-weight: 600; font-size: 0.9rem;"><i class="fa-solid fa-shield-halved"></i> Tier-4 Security Enabled</p>
+            <p style="color: var(--text-secondary); font-size: 0.75rem;">Jordan Version 4.2.6 • Active Session</p>
+        </div>
+    </header>
+
+    <div class="analytics-grid">
+        <div class="metric-card">
+            <div class="metric-info">
+                <p>Master SKU Catalog</p>
+                <h3 id="countTotal">0</h3>
+            </div>
+            <div class="metric-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+        </div>
+        <div class="metric-card alert">
+            <div class="metric-info">
+                <p>Critical Out-of-Stock</p>
+                <h3 id="countAlert" style="color: var(--neon-red);">0</h3>
+            </div>
+            <div class="metric-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        </div>
+        <div class="metric-card revenue">
+            <div class="metric-info">
+                <p>Session Sales Volume</p>
+                <h3 id="countSales" style="color: var(--neon-green);">0.00 JOD</h3>
+            </div>
+            <div class="metric-icon"><i class="fa-solid fa-cash-register"></i></div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <i class="fa-solid fa-terminal"></i>
+        <input type="text" id="dbSearch" class="search-input" placeholder="Scan Barcode or Type Drug Name Formula..." onkeyup="filterDatabase()">
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>System Barcode</th>
+                    <th>Medication Specifications</th>
+                    <th>Retail Price</th>
+                    <th>Available Stock</th>
+                    <th>Status Inventory</th>
+                    <th>Terminal Actions</th>
+                </tr>
+            </thead>
+            <tbody id="masterDatabaseBody">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Official Pharmaceutical Simulated Database (Jordan Pricing Standard)
+    let dbInventory = [
+        { barcode: "6251001101", name: "Panadol Advance (500mg) Pain Reliever", price: 1.20, stock: 140, limit: 20 },
+        { barcode: "6251002202", name: "Amoclan (625mg) Broad-Spectrum Antibiotic", price: 6.45, stock: 15, limit: 10 },
+        { barcode: "6251003303", name: "Profinal (400mg) Anti-Inflammatory", price: 1.15, stock: 4, limit: 12 },
+        { barcode: "6251004404", name: "Lipitor (20mg) Cardiovascular Treatment", price: 24.30, stock: 35, limit: 5 },
+        { barcode: "6251005505", name: "Ventolin Asthma Inhaler (100mcg)", price: 4.80, stock: 2, limit: 8 },
+        { barcode: "6251006606", name: "Voltaren Emulgel (50g) Topical Gel", price: 5.25, stock: 50, limit: 15 },
+        { barcode: "6251008808", name: "Omeprazole (20mg) Acid Reducer", price: 3.10, stock: 65, limit: 15 },
+        { barcode: "6251009909", name: "Augmentin (1g) Prescription Antibiotic", price: 9.80, stock: 22, limit: 8 },
+        { barcode: "6251010010", name: "Excedrin Targeted Migraine Relief", price: 2.75, stock: 3, limit: 10 }
+    ];
+
+    let sessionSales = 0.00;
+
+    function runDatabaseEngine() {
+        const tbody = document.getElementById('masterDatabaseBody');
+        tbody.innerHTML = "";
+        let criticalAlerts = 0;
+        
+        dbInventory.forEach((item, idx) => {
+            let isCritical = item.stock <= item.limit;
+            if (isCritical) criticalAlerts++;
+            
+            let badgeHtml = isCritical 
+                ? `<span class="status-badge critical"><i class="fa-solid fa-triangle-exclamation"></i> CRITICAL STOCK</span>`
+                : `<span class="status-badge active"><i class="fa-solid fa-circle-check"></i> OPTIMAL</span>`;
+
+            tbody.innerHTML += `
+                <tr>
+                    <td class="barcode-txt">${item.barcode}</td>
+                    <td class="med-name">${item.name}</td>
+                    <td class="price-txt">${item.price.toFixed(2)} JOD</td>
+                    <td class="stock-txt" style="color: ${isCritical ? 'var(--neon-red)' : 'var(--text-primary)'}">${item.stock} Units</td>
+                    <td>${badgeHtml}</td>
+                    <td>
+                        <button class="btn-action" onclick="alterStock(${idx}, 1)"><i class="fa-solid fa-plus"></i> Restock</button>
+                        <button class="btn-action sell" onclick="triggerSale(${idx})"><i class="fa-solid fa-cart-shopping"></i> Dispense</button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        document.getElementById('countTotal').innerText = dbInventory.length;
+        document.getElementById('countAlert').innerText = criticalAlerts;
+        document.getElementById('countSales').innerText = sessionSales.toFixed(2) + " JOD";
+    }
+
+    function alterStock(idx, qty) {
+        if (dbInventory[idx].stock + qty >= 0) {
+            dbInventory[idx].stock += qty;
+            runDatabaseEngine();
+        }
+    }
+
+    function triggerSale(idx) {
+        if (dbInventory[idx].stock > 0) {
+            dbInventory[idx].stock--;
+            sessionSales += dbInventory[idx].price;
+            runDatabaseEngine();
+        }
+    }
+
+    function filterDatabase() {
+        let input = document.getElementById("dbSearch").value.toLowerCase();
+        let rows = document.getElementById("masterDatabaseBody").getElementsByTagName("tr");
+        
+        for (let i = 0; i < rows.length; i++) {
+            let nameCol = rows[i].getElementsByTagName("td")[1];
+            let codeCol = rows[i].getElementsByTagName("td")[0];
+            if (nameCol || codeCol) {
+                let name = nameCol.textContent || nameCol.innerText;
+                let code = codeCol.textContent || codeCol.innerText;
+                rows[i].style.display = (name.toLowerCase().includes(input) || code.toLowerCase().includes(input)) ? "" : "none";
+            }
+        }
+    }
+
+    runDatabaseEngine();
+</script>
+
 </body>
 </html>
