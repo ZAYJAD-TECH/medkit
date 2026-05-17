@@ -3,277 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraMed Enterprise OS v4.2</title>
+    <title>AuraMed Enterprise OS | Pharmacy Management Terminal</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#080e1e">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#f8fafc">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            --bg-main: #080e1e;
-            --bg-card: #111a33;
-            --accent-cyan: #00f5d4;
-            --accent-blue: #00b4d8;
-            --neon-red: #ff3366;
-            --neon-green: #00f5a0;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --border-line: rgba(255, 255, 255, 0.05);
+            --bg-main: #f8fafc;
+            --panel-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --brand-blue: #0284c7;
+            --brand-blue-hover: #0369a1;
+            --alert-red: #dc2626;
+            --alert-bg: #fef2f2;
+            --success-green: #16a34a;
+            --success-bg: #f0fdf4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-primary); padding: 25px; overflow-x: hidden; }
+        body { background-color: var(--bg-main); color: var(--text-primary); padding: 40px 20px; -webkit-font-smoothing: antialiased; }
         
-        .dashboard-container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1280px; margin: 0 auto; }
         
-        /* Modern Glassmorphic Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 30px;
-            background: rgba(17, 26, 51, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-line);
-            border-radius: 16px;
-            margin-bottom: 25px;
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 35px; 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 24px; 
         }
+        h1 { font-size: 1.6rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+        h1 span { color: var(--brand-blue); font-weight: 500; }
         
-        .brand { display: flex; align-items: center; gap: 15px; }
-        .brand-logo { font-size: 2rem; color: var(--accent-cyan); animation: pulse 2s infinite; }
-        .brand-title h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
-        .brand-title p { font-size: 0.8rem; color: var(--text-secondary); }
-        
-        /* High-End Analytics Counter Cards */
-        .analytics-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 35px;
         }
         
-        .metric-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-line);
-            padding: 25px;
-            border-radius: 16px;
+        .stat-card {
+            background: var(--panel-bg);
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
-        .metric-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-blue);
-        }
-        .metric-card.alert::before { background: var(--neon-red); }
-        .metric-card.revenue::before { background: var(--neon-green); }
+        .stat-card p { color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-card h2 { font-size: 1.8rem; font-weight: 700; margin-top: 4px; color: var(--text-primary); }
+        .stat-card i { font-size: 1.5rem; color: var(--text-secondary); }
         
-        .metric-info p { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; }
-        .metric-info h3 { font-size: 2rem; font-weight: 700; margin-top: 5px; font-family: monospace; }
-        .metric-icon { font-size: 2.2rem; color: rgba(255,255,255,0.1); }
-        
-        /* Advanced Control & Search Bar */
-        .control-bar { position: relative; margin-bottom: 25px; }
-        .search-input {
-            width: 100%;
-            padding: 18px 20px 18px 55px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-line);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1.05rem;
-            transition: all 0.3s ease;
+        .stat-card.alert-active { border-left: 4px solid var(--alert-red); }
+        .stat-card.alert-active h2 { color: var(--alert-red); }
+        .stat-card.alert-active i { color: var(--alert-red); }
+
+        .search-box-container { position: relative; margin-bottom: 24px; }
+        .search-box { 
+            width: 100%; 
+            padding: 14px 16px 14px 44px; 
+            background: var(--panel-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            color: var(--text-primary); 
+            font-size: 0.95rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            transition: all 0.15s ease;
         }
-        .search-input:focus {
-            border-color: var(--accent-cyan);
-            outline: none;
-            box-shadow: 0 0 20px rgba(0, 245, 212, 0.15);
-        }
-        .control-bar i { position: absolute; left: 22px; top: 22px; color: var(--accent-cyan); font-size: 1.2rem; }
-        
-        /* Enterprise Master Data Table */
-        .table-wrapper {
-            background: var(--bg-card);
-            border: 1px solid var(--border-line);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-        
+        .search-box:focus { border-color: var(--brand-blue); outline: none; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
+        .search-box-container i { position: absolute; left: 16px; top: 17px; color: var(--text-secondary); font-size: 1rem; }
+
+        .table-container { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 18px 24px; border-bottom: 1px solid var(--border-line); }
-        th { background: rgba(255,255,255,0.02); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        th, td { padding: 14px 20px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        th { background: #f8fafc; color: var(--text-secondary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
         
-        tr:hover { background: rgba(255, 255, 255, 0.01); }
+        .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+        .badge.instock { background: var(--success-bg); color: var(--success-green); }
+        .badge.lowstock { background: var(--alert-bg); color: var(--alert-red); }
         
-        .barcode-txt { font-family: monospace; color: var(--accent-blue); font-weight: 500; }
-        .med-name { font-weight: 600; font-size: 1.05rem; color: #fff; }
-        .price-txt { font-family: monospace; font-weight: 700; color: var(--neon-green); font-size: 1.1rem; }
-        .stock-txt { font-weight: 700; font-size: 1.1rem; }
+        .action-btn { background: var(--panel-bg); border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 0.85rem; transition: all 0.1s ease; margin-right: 4px; }
+        .action-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .sell-btn { color: var(--alert-red); }
+        .sell-btn:hover { background: var(--alert-bg); border-color: rgba(220, 38, 38, 0.2); }
         
-        /* Status Systems badges */
-        .status-badge { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
-        .status-badge.active { background: rgba(0, 245, 160, 0.1); color: var(--neon-green); }
-        .status-badge.critical { background: rgba(255, 51, 102, 0.1); color: var(--neon-red); animation: flash-glow 1.5s infinite; }
-        
-        @keyframes flash-glow { 50% { opacity: 0.5; } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        
-        /* Terminal Action Buttons */
-        .btn-action { background: rgba(255,255,255,0.02); border: 1px solid var(--border-line); color: #fff; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s ease; }
-        .btn-action:hover { background: var(--accent-blue); border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 180, 216, 0.3); }
-        .btn-action.sell:hover { background: var(--neon-red); border-color: var(--neon-red); box-shadow: 0 0 15px rgba(255, 51, 102, 0.3); }
+        .price-text { font-weight: 600; color: var(--text-primary); }
+        .barcode-text { font-family: monospace; color: var(--text-secondary); font-size: 0.85rem; }
     </style>
 </head>
 <body>
 
-<div class="dashboard-container">
+<div class="container">
     <header>
-        <div class="brand">
-            <div class="brand-logo"><i class="fa-solid fa-circle-h"></i></div>
-            <div class="brand-title">
-                <h1>AuraMed <span>OS Enterprise</span></h1>
-                <p>Advanced Pharmacy ERP Core Terminal • Secure Local Database</p>
-            </div>
-        </div>
+        <h1>AuraMed <span>OS / Enterprise Terminal</span></h1>
         <div style="text-align: right;">
-            <p style="color: var(--accent-cyan); font-weight: 600; font-size: 0.9rem;"><i class="fa-solid fa-shield-halved"></i> Tier-4 Security Enabled</p>
-            <p style="color: var(--text-secondary); font-size: 0.75rem;">Jordan Version 4.2.6 • Active Session</p>
+            <p style="color: var(--success-green); font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-circle-check"></i> Connected to National Registry</p>
+            <p style="color: var(--text-secondary); font-size: 0.8rem;">Amman Hub • Terminal v2.6.4</p>
         </div>
     </header>
 
-    <div class="analytics-grid">
-        <div class="metric-card">
-            <div class="metric-info">
-                <p>Master SKU Catalog</p>
-                <h3 id="countTotal">0</h3>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div>
+                <p>Active Medication SKUs</p>
+                <h2 id="totalItems">0</h2>
             </div>
-            <div class="metric-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <i class="fa-solid fa-boxes-stacked"></i>
         </div>
-        <div class="metric-card alert">
-            <div class="metric-info">
-                <p>Critical Out-of-Stock</p>
-                <h3 id="countAlert" style="color: var(--neon-red);">0</h3>
+        <div class="stat-card" id="alertCard">
+            <div>
+                <p>Supply Chain Alerts</p>
+                <h2 id="alertItems">0</h2>
             </div>
-            <div class="metric-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-        </div>
-        <div class="metric-card revenue">
-            <div class="metric-info">
-                <p>Session Sales Volume</p>
-                <h3 id="countSales" style="color: var(--neon-green);">0.00 JOD</h3>
-            </div>
-            <div class="metric-icon"><i class="fa-solid fa-cash-register"></i></div>
+            <i class="fa-solid fa-circle-exclamation"></i>
         </div>
     </div>
 
-    <div class="control-bar">
-        <i class="fa-solid fa-terminal"></i>
-        <input type="text" id="dbSearch" class="search-input" placeholder="Scan Barcode or Type Drug Name Formula..." onkeyup="filterDatabase()">
+    <div class="search-box-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" class="search-box" placeholder="Filter registry by description, compound name, or standard barcode..." onkeyup="searchMedicine()">
     </div>
 
-    <div class="table-wrapper">
+    <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>System Barcode</th>
-                    <th>Medication Specifications</th>
-                    <th>Retail Price</th>
-                    <th>Available Stock</th>
-                    <th>Status Inventory</th>
-                    <th>Terminal Actions</th>
+                    <th style="width: 15%;">Product Barcode</th>
+                    <th style="width: 35%;">Medication Description</th>
+                    <th style="width: 15%;">Unit Price</th>
+                    <th style="width: 15%;">Available Stock</th>
+                    <th style="width: 10%;">Status</th>
+                    <th style="width: 10%; text-align: right;">Terminal Actions</th>
                 </tr>
             </thead>
-            <tbody id="masterDatabaseBody">
+            <tbody id="inventoryBody">
                 </tbody>
         </table>
     </div>
 </div>
 
 <script>
-    // Official Pharmaceutical Simulated Database (Jordan Pricing Standard)
-    let dbInventory = [
-        { barcode: "6251001101", name: "Panadol Advance (500mg) Pain Reliever", price: 1.20, stock: 140, limit: 20 },
-        { barcode: "6251002202", name: "Amoclan (625mg) Broad-Spectrum Antibiotic", price: 6.45, stock: 15, limit: 10 },
-        { barcode: "6251003303", name: "Profinal (400mg) Anti-Inflammatory", price: 1.15, stock: 4, limit: 12 },
-        { barcode: "6251004404", name: "Lipitor (20mg) Cardiovascular Treatment", price: 24.30, stock: 35, limit: 5 },
-        { barcode: "6251005505", name: "Ventolin Asthma Inhaler (100mcg)", price: 4.80, stock: 2, limit: 8 },
-        { barcode: "6251006606", name: "Voltaren Emulgel (50g) Topical Gel", price: 5.25, stock: 50, limit: 15 },
-        { barcode: "6251008808", name: "Omeprazole (20mg) Acid Reducer", price: 3.10, stock: 65, limit: 15 },
-        { barcode: "6251009909", name: "Augmentin (1g) Prescription Antibiotic", price: 9.80, stock: 22, limit: 8 },
-        { barcode: "6251010010", name: "Excedrin Targeted Migraine Relief", price: 2.75, stock: 3, limit: 10 }
+    // Full Jordanian Pharmacy Registry Simulation
+    let inventory = [
+        { barcode: "6251001101", name: "Panadol Advance (500mg)", price: 1.20, stock: 140, minLimit: 20 },
+        { barcode: "6251002202", name: "Amoclan (625mg) Antibiotic", price: 6.45, stock: 15, minLimit: 10 },
+        { barcode: "6251003303", name: "Profinal (400mg) Ibuprofen", price: 1.15, stock: 4, minLimit: 12 },
+        { barcode: "6251004404", name: "Lipitor (20mg) Cholesterol", price: 24.30, stock: 35, minLimit: 5 },
+        { barcode: "6251005505", name: "Ventolin Inhaler", price: 4.80, stock: 2, minLimit: 8 },
+        { barcode: "6251006606", name: "Voltaren Emulgel (50g)", price: 5.25, stock: 50, minLimit: 15 },
+        { barcode: "6251007707", name: "Gupison (5mg) Prednisolone", price: 1.40, stock: 8, minLimit: 10 },
+        { barcode: "6251008808", name: "Omeprazole (20mg) Gastric", price: 3.10, stock: 65, minLimit: 15 },
+        { barcode: "6251009909", name: "Augmentin (1g) Antibiotic", price: 9.80, stock: 22, minLimit: 8 },
+        { barcode: "6251010010", name: "Excedrin Migraine Tablets", price: 2.75, stock: 3, minLimit: 10 },
+        { barcode: "6251011111", name: "Advil Liqui-Gels (200mg)", price: 3.50, stock: 85, minLimit: 15 },
+        { barcode: "6251012212", name: "Clexane (4000 IU) Injection", price: 38.20, stock: 12, minLimit: 3 },
+        { barcode: "6251013313", name: "Zyrtec (10mg) Allergy", price: 2.90, stock: 40, minLimit: 10 },
+        { barcode: "6251014414", name: "Disflatyl Chewable Tablets", price: 1.65, stock: 55, minLimit: 12 },
+        { barcode: "6251015515", name: "Gaviscon Liquid Advance", price: 5.40, stock: 18, minLimit: 6 },
+        { barcode: "6251016616", name: "Claritin (10mg) Non-Drowsy", price: 4.10, stock: 30, minLimit: 8 },
+        { barcode: "6251017717", name: "Nexium (40mg) Acid Reflux", price: 18.60, stock: 25, minLimit: 5 },
+        { barcode: "6251018818", name: "Brufen (600mg) Analgesic", price: 2.10, stock: 90, minLimit: 20 },
+        { barcode: "6251019919", name: "Cataflam (50mg) Pain Relief", price: 3.25, stock: 6, minLimit: 15 },
+        { barcode: "6251020020", name: "Flixonase Nasal Spray", price: 6.80, stock: 14, minLimit: 4 },
+        { barcode: "6251021121", name: "Solpadeine Soluble Tablets", price: 2.40, stock: 110, minLimit: 25 },
+        { barcode: "6251022222", name: "Glucophage (1000mg) Diabetes", price: 4.50, stock: 75, minLimit: 15 },
+        { barcode: "6251023323", name: "Hyzaar (50mg/12.5mg) BP", price: 14.20, stock: 20, minLimit: 5 },
+        { barcode: "6251024424", name: "Otrivin 0.1% Nasal Drops", price: 2.15, stock: 1, minLimit: 10 },
+        { barcode: "6251025525", name: "Strepsils Honey & Lemon", price: 2.60, stock: 130, minLimit: 15 }
     ];
 
-    let sessionSales = 0.00;
-
-    function runDatabaseEngine() {
-        const tbody = document.getElementById('masterDatabaseBody');
+    function renderTable() {
+        const tbody = document.getElementById('inventoryBody');
         tbody.innerHTML = "";
-        let criticalAlerts = 0;
         
-        dbInventory.forEach((item, idx) => {
-            let isCritical = item.stock <= item.limit;
-            if (isCritical) criticalAlerts++;
+        let alertCount = 0;
+        
+        inventory.forEach((item, index) => {
+            let isLow = item.stock <= item.minLimit;
+            if (isLow) alertCount++;
             
-            let badgeHtml = isCritical 
-                ? `<span class="status-badge critical"><i class="fa-solid fa-triangle-exclamation"></i> CRITICAL STOCK</span>`
-                : `<span class="status-badge active"><i class="fa-solid fa-circle-check"></i> OPTIMAL</span>`;
+            let statusBadge = isLow 
+                ? `<span class="badge lowstock">Low Stock</span>`
+                : `<span class="badge instock">In Stock</span>`;
 
             tbody.innerHTML += `
                 <tr>
-                    <td class="barcode-txt">${item.barcode}</td>
-                    <td class="med-name">${item.name}</td>
-                    <td class="price-txt">${item.price.toFixed(2)} JOD</td>
-                    <td class="stock-txt" style="color: ${isCritical ? 'var(--neon-red)' : 'var(--text-primary)'}">${item.stock} Units</td>
-                    <td>${badgeHtml}</td>
-                    <td>
-                        <button class="btn-action" onclick="alterStock(${idx}, 1)"><i class="fa-solid fa-plus"></i> Restock</button>
-                        <button class="btn-action sell" onclick="triggerSale(${idx})"><i class="fa-solid fa-cart-shopping"></i> Dispense</button>
+                    <td class="barcode-text">${item.barcode}</td>
+                    <td style="font-weight: 500; color: var(--text-primary);">${item.name}</td>
+                    <td class="price-text">${item.price.toFixed(2)} JOD</td>
+                    <td style="font-weight: 600; color: ${isLow ? 'var(--alert-red)' : 'var(--text-primary)'}">${item.stock} units</td>
+                    <td>${statusBadge}</td>
+                    <td style="text-align: right;">
+                        <button class="action-btn" onclick="updateStock(${index}, 1)"><i class="fa-solid fa-plus"></i></button>
+                        <button class="action-btn sell-btn" onclick="updateStock(${index}, -1)"><i class="fa-solid fa-minus"></i></button>
                     </td>
                 </tr>
             `;
         });
         
-        document.getElementById('countTotal').innerText = dbInventory.length;
-        document.getElementById('countAlert').innerText = criticalAlerts;
-        document.getElementById('countSales').innerText = sessionSales.toFixed(2) + " JOD";
-    }
-
-    function alterStock(idx, qty) {
-        if (dbInventory[idx].stock + qty >= 0) {
-            dbInventory[idx].stock += qty;
-            runDatabaseEngine();
+        document.getElementById('totalItems').innerText = inventory.length;
+        document.getElementById('alertItems').innerText = alertCount;
+        
+        const alertCard = document.getElementById('alertCard');
+        if (alertCount > 0) {
+            alertCard.classList.add('alert-active');
+        } else {
+            alertCard.classList.remove('alert-active');
         }
     }
 
-    function triggerSale(idx) {
-        if (dbInventory[idx].stock > 0) {
-            dbInventory[idx].stock--;
-            sessionSales += dbInventory[idx].price;
-            runDatabaseEngine();
+    function updateStock(index, amount) {
+        if (inventory[index].stock + amount >= 0) {
+            inventory[index].stock += amount;
+            renderTable();
         }
     }
 
-    function filterDatabase() {
-        let input = document.getElementById("dbSearch").value.toLowerCase();
-        let rows = document.getElementById("masterDatabaseBody").getElementsByTagName("tr");
+    function searchMedicine() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let rows = document.getElementById("inventoryBody").getElementsByTagName("tr");
         
         for (let i = 0; i < rows.length; i++) {
-            let nameCol = rows[i].getElementsByTagName("td")[1];
-            let codeCol = rows[i].getElementsByTagName("td")[0];
-            if (nameCol || codeCol) {
-                let name = nameCol.textContent || nameCol.innerText;
-                let code = codeCol.textContent || codeCol.innerText;
-                rows[i].style.display = (name.toLowerCase().includes(input) || code.toLowerCase().includes(input)) ? "" : "none";
+            let nameColumn = rows[i].getElementsByTagName("td")[1];
+            let barcodeColumn = rows[i].getElementsByTagName("td")[0];
+            if (nameColumn || barcodeColumn) {
+                let nameText = nameColumn.textContent || nameColumn.innerText;
+                let barcodeText = barcodeColumn.textContent || barcodeColumn.innerText;
+                if (nameText.toLowerCase().indexOf(input) > -1 || barcodeText.toLowerCase().indexOf(input) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
             }
         }
     }
 
-    runDatabaseEngine();
+    renderTable();
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('data:text/javascript;base64,Y29uc29sZS5sb2coJ1NlcnZpY2UgV29ya2VyIFJlZ2lzdGVyZWQnKTs=');
+    }
 </script>
 
 </body>
