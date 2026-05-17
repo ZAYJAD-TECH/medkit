@@ -3,181 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraMed Core v100.0</title>
+    <title>AuraMed Enterprise POS</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-main: #090d16;
-            --bg-card: #111827;
-            --border: #1f2937;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --primary: #0284c7;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
+            --panel-bg: #111622;
+            --main-bg: #0b0e14;
+            --border-color: #1f2736;
+            --text-primary: #f8fafc;
+            --text-muted: #64748b;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-main); padding: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Public Sans', sans-serif; }
+        body { background-color: var(--main-bg); color: var(--text-primary); padding: 25px; }
         
-        .layout-wrapper { max-width: 1700px; margin: 0 auto; display: grid; gap: 20px; }
+        .workspace { max-width: 1650px; margin: 0 auto; display: grid; gap: 20px; }
         
+        /* Lock Screen Styling */
+        #lock-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #0b0e14; z-index: 9999; display: none; justify-content: center; align-items: center; }
+        .lock-box { background: var(--panel-bg); border: 1px solid var(--border-color); padding: 40px; border-radius: 6px; text-align: center; max-width: 450px; width: 100%; }
+        .lock-box h2 { color: var(--accent-red); margin-bottom: 10px; font-size: 1.4rem; font-weight: 700; }
+        .lock-box p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
         header { 
-            background: var(--bg-card); 
-            padding: 15px 25px; 
-            border-radius: 6px; 
-            border: 1px solid var(--border); 
+            background: var(--panel-bg); 
+            padding: 18px 25px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-color); 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
         }
-        .logo { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .logo span { color: var(--text-muted); font-weight: 400; font-size: 0.8rem; background: #1f2937; padding: 2px 8px; border-radius: 4px; }
+        .brand { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
+        .brand span { color: var(--text-muted); font-weight: 400; font-size: 0.8rem; margin-left: 6px; border-left: 1px solid var(--border-color); padding-left: 8px; }
+        .sys-status { font-size: 0.8rem; color: var(--accent-green); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+
+        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .metric-card { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 4px; padding: 20px; }
+        .metric-card p { color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card h3 { font-size: 1.5rem; font-weight: 700; margin-top: 6px; letter-spacing: -0.5px; }
+
+        .main-layout { display: grid; grid-template-columns: 2.3fr 1fr; gap: 20px; }
+        .panel { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 4px; padding: 22px; }
+        .panel-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; letter-spacing: 0.5px; }
         
-        .stats-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
-        .stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .stat-box p { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
-        .stat-box h3 { font-size: 1.4rem; font-weight: 700; margin-top: 5px; }
-        .stat-icon { font-size: 1.1rem; color: var(--text-muted); }
+        .form-row { display: grid; grid-template-columns: 1.3fr 2.2fr 1fr 1fr auto; gap: 12px; align-items: flex-end; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        .input-group label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+        .field-ctrl { background: var(--main-bg); border: 1px solid var(--border-color); border-radius: 3px; padding: 10px 12px; color: var(--text-primary); font-size: 0.85rem; width: 100%; height: 38px; }
+        .field-ctrl:focus { border-color: var(--accent-blue); outline: none; }
         
-        .main-content { display: grid; grid-template-columns: 2.1fr 1fr; gap: 20px; }
-        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-muted); }
+        .btn-action { background: var(--accent-blue); color: #0b0e14; border: none; padding: 0 20px; border-radius: 3px; font-weight: 600; font-size: 0.85rem; cursor: pointer; height: 38px; transition: opacity 0.2s; }
+        .btn-action:hover { opacity: 0.9; }
         
-        .form-grid { display: grid; grid-template-columns: repeat(5, 1fr) auto; gap: 10px; align-items: flex-end; }
-        .field-group { display: flex; flex-direction: column; gap: 5px; }
-        .field-group label { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-        .ctrl-input { background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 8px 10px; color: var(--text-main); font-size: 0.8rem; width: 100%; height: 36px; }
-        .ctrl-input:focus { border-color: var(--primary); outline: none; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 15px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; cursor: pointer; height: 36px; }
-        
-        .search-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 15px 0; }
-        .search-wrapper { position: relative; width: 100%; }
-        .search-ctrl { width: 100%; background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 10px 15px 10px 38px; color: var(--text-main); font-size: 0.85rem; }
-        .search-wrapper i { position: absolute; left: 14px; top: 13px; color: var(--text-muted); }
-        
-        .grid-container { max-height: 480px; overflow-y: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-main); }
+        .search-container { margin: 20px 0; }
+        .search-field { width: 100%; background: var(--main-bg); border: 1px solid var(--border-color); border-radius: 3px; padding: 12px 15px; color: var(--text-primary); font-size: 0.85rem; }
+
+        .table-view { max-height: 420px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 3px; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px 15px; border-bottom: 1px solid var(--border); font-size: 0.8rem; text-align: left; }
-        th { background: #111827; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; font-size: 0.75rem; text-transform: uppercase; }
-        tr:hover td { background: rgba(255,255,255,0.01); }
+        th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; text-align: left; }
+        th { background: #161d2b; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; font-size: 0.75rem; text-transform: uppercase; }
         
-        .status-pill { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; display: inline-block; }
-        .status-pill.in { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .status-pill.low { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-        .status-pill.warn { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .row-btn { background: none; border: none; color: var(--accent-blue); cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 15px; }
+        .row-btn.purge { color: var(--accent-red); }
 
-        .action-link { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 10px; }
-        .action-link.del { color: var(--danger); }
-
-        .cart-wrapper { display: flex; flex-direction: column; min-height: 600px; justify-content: space-between; }
-        .cart-list { max-height: 320px; overflow-y: auto; }
-        .cart-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 0.8rem; }
+        .checkout-panel { display: flex; flex-direction: column; min-height: 580px; justify-content: space-between; }
+        .items-bucket { max-height: 380px; overflow-y: auto; }
+        .bucket-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border-color); font-size: 0.85rem; }
         
-        .insurance-panel { background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 12px; margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .summary-box { border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-finalize { width: 100%; background: var(--accent-green); color: #0b0e14; border: none; padding: 14px; border-radius: 3px; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        .checkout-box { border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px; }
-        .summary-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
-        .total-summary { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
-        .btn-commit { width: 100%; background: var(--success); color: white; border: none; padding: 12px; border-radius: 4px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 10px; }
-        
-        .toast { position: fixed; bottom: 20px; left: 20px; background: var(--primary); color: white; padding: 12px 20px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 2000; }
-        
-        .receipt-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .receipt-paper { background: white; color: black; width: 300px; padding: 20px; font-family: monospace; font-size: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 2px; }
-        .receipt-paper th, .receipt-paper td { color: black; padding: 4px 0; border-bottom: 1px dashed #ccc; font-family: monospace; font-size: 0.75rem; }
-        .receipt-paper th { background: none; }
-        .close-receipt-btn { background: var(--danger); color: white; border: none; padding: 8px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: 600; font-size: 0.8rem; border-radius: 4px; }
+        /* Thermal Invoice Design */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .invoice-sheet { background: #fff; color: #000; width: 320px; padding: 25px 20px; font-family: monospace; font-size: 0.75rem; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .invoice-sheet th, .invoice-sheet td { color: #000; padding: 6px 0; border-bottom: 1px dashed #bbb; font-family: monospace; font-size: 0.75rem; }
+        .invoice-sheet th { background: none; text-align: left; }
+        .btn-close-invoice { background: #000; color: #fff; border: none; padding: 10px; width: 100%; margin-top: 20px; cursor: pointer; font-family: monospace; font-weight: 700; }
     </style>
 </head>
 <body>
 
-<div class="layout-wrapper">
+<div id="lock-screen">
+    <div class="lock-box">
+        <h2>TERMINAL SUSPENDED</h2>
+        <p>تم تعليق رخصة هذا النظام مؤقتاً لعدم اكتمال الدفع أو انتهاء فترة الصلاحية. يرجى مراجعة المبرمج المسؤول لتفعيل المحطة فوراً.</p>
+    </div>
+</div>
+
+<div class="workspace" id="app-content">
     
     <header>
-        <div class="logo">AuraMed Network <span>v100.0 Enterprise Terminal</span></div>
-        <div style="font-size: 0.8rem; color: var(--success); font-weight: 600;"><i class="fa-solid fa-cloud"></i> Node Synchronizer Active (Amman Central)</div>
+        <div class="brand">AuraMed OS <span>v100.0 Enterprise POS</span></div>
+        <div class="sys-status">● Core Engine Operational</div>
     </header>
 
-    <div class="stats-bar">
-        <div class="stat-box">
-            <div><p>Gross Revenue</p><h3 id="m-rev">0.00 JOD</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <p>Gross Volume</p>
+            <h3 id="m-rev">0.00 JOD</h3>
         </div>
-        <div class="stat-box">
-            <div><p>Net Profit</p><h3 id="m-profit" style="color: var(--success);">0.00 JOD</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+        <div class="metric-card">
+            <p>Invoices Audited</p>
+            <h3 id="m-count">0</h3>
         </div>
-        <div class="stat-box">
-            <div><p>Invoices Cleared</p><h3 id="m-count">0</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-file-invoice"></i></div>
+        <div class="metric-card">
+            <p>Registry SKUs</p>
+            <h3 id="m-items">0</h3>
         </div>
-        <div class="stat-box">
-            <div><p>Active Items</p><h3 id="m-items">0</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
-        </div>
-        <div class="stat-box">
-            <div><p>Critical Expiries</p><h3 id="m-alerts" style="color: var(--danger);">0</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="metric-card">
+            <p>Depleted Batches</p>
+            <h3 id="m-alerts" style="color: var(--text-primary);">0</h3>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="left-col">
-            <div class="card" style="margin-bottom: 20px;">
-                <div class="card-header">Inventory & Batch Intake Portal</div>
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label>Barcode ID</label>
-                        <input type="text" id="in-barcode" class="ctrl-input" placeholder="Scan/Leave blank auto">
+    <div class="main-layout">
+        <div class="left-pane">
+            <div class="panel" style="margin-bottom: 20px;">
+                <div class="panel-title">Inventory Master Intake</div>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>SKU / Barcode</label>
+                        <input type="text" id="in-barcode" class="field-ctrl" placeholder="Scan item...">
                     </div>
-                    <div class="field-group">
-                        <label>Description</label>
-                        <input type="text" id="in-name" class="ctrl-input">
+                    <div class="input-group">
+                        <label>Item Description</label>
+                        <input type="text" id="in-name" class="field-ctrl">
                     </div>
-                    <div class="field-group">
-                        <label>Cost Price</label>
-                        <input type="number" step="0.01" id="in-cost" class="ctrl-input">
-                    </div>
-                    <div class="field-group">
+                    <div class="input-group">
                         <label>Retail Price</label>
-                        <input type="number" step="0.01" id="in-price" class="ctrl-input">
+                        <input type="number" step="0.01" id="in-price" class="field-ctrl" placeholder="0.00">
                     </div>
-                    <div class="field-group">
-                        <label>Stock Qty</label>
-                        <input type="number" id="in-stock" class="ctrl-input" value="100">
+                    <div class="input-group">
+                        <label>Quantity</label>
+                        <input type="number" id="in-stock" class="field-ctrl" value="50">
                     </div>
-                    <div class="field-group">
-                        <label>Expiry Date</label>
-                        <input type="date" id="in-expiry" class="ctrl-input">
-                    </div>
-                    <button class="btn-submit" onclick="addNewItem()">Save SKU</button>
+                    <button class="btn-action" onclick="addNewItem()">Commit SKU</button>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="search-row">
-                    <div class="search-wrapper">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="text" id="searchCtrl" class="search-ctrl" placeholder="Intercept Hardware Scanner Input or Filter Inventory..." onkeyup="filterRegistry()">
-                    </div>
+            <div class="panel">
+                <div class="search-container">
+                    <input type="text" id="searchCtrl" class="search-field" placeholder="Filter central database by name or identifier..." onkeyup="filterRegistry()">
                 </div>
                 
-                <div class="grid-container">
+                <div class="table-view">
                     <table>
                         <thead>
                             <tr>
-                                <th>Barcode</th>
+                                <th>Barcode ID</th>
                                 <th>Description</th>
-                                <th>Cost</th>
-                                <th>Retail</th>
+                                <th>Price</th>
                                 <th>Stock Status</th>
-                                <th>Expiry Batch</th>
-                                <th style="text-align: right;">Terminal Action</th>
+                                <th style="text-align: right;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="registryBody"></tbody>
@@ -186,145 +170,101 @@
             </div>
         </div>
 
-        <div class="right-col">
-            <div class="card cart-wrapper">
+        <div class="right-pane">
+            <div class="panel checkout-panel">
                 <div>
-                    <div class="card-header">Active Bill Station</div>
-                    <div id="cartBody" class="cart-list">
-                        <p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;" id="emptyMsg">Terminal Standby. Process client units.</p>
-                    </div>
-                    
-                    <div class="insurance-panel">
-                        <div class="field-group">
-                            <label>شركة إدارة التأمين (TPA)</label>
-                            <select id="ins-provider" class="ctrl-input" onchange="calculateTotals()">
-                                <option value="NONE">كاش (مريض شخصي)</option>
-                                <option value="MED">MedService (ميد سيرفيس)</option>
-                                <option value="NAT">NatHealth (نات هيلث)</option>
-                                <option value="GLOBE">GlobeMed (غلوب ميد)</option>
-                            </select>
-                        </div>
-                        <div class="field-group">
-                            <label>نسبة التحمل للمريض (%)</label>
-                            <select id="ins-copay-pct" class="ctrl-input" onchange="calculateTotals()">
-                                <option value="100">تحمل كامل 100% (كاش)</option>
-                                <option value="20">يتحمل 20% (التأمين يغطي 80%)</option>
-                                <option value="15">يتحمل 15% (التأمين يغطي 85%)</option>
-                                <option value="10">يتحمل 10% (التأمين يغطي 90%)</option>
-                                <option value="0">إعفاء كامل 0%</option>
-                            </select>
-                        </div>
+                    <div class="panel-title">Active Checkout Terminal</div>
+                    <div id="cartBody" class="items-bucket">
+                        <p style="color: var(--text-muted); text-align:center; padding: 50px 0; font-size: 0.85rem;">Terminal Standby</p>
                     </div>
                 </div>
 
-                <div class="checkout-box">
-                    <div class="summary-row"><span>Gross Subtotal</span><span id="sum-sub">0.00 JOD</span></div>
-                    <div class="summary-row"><span>Insurance Coverage</span><span id="sum-ins" style="color: var(--success);">0.00 JOD</span></div>
-                    <div class="total-summary">
-                        <span>Patient Co-Pay Due</span>
-                        <span id="totalText" style="color: var(--primary);">0.00 JOD</span>
+                <div class="summary-box">
+                    <div class="total-row">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px;">NET TOTAL DUE</span>
+                        <span id="totalText" style="color: var(--accent-green); font-size: 1.5rem; font-weight: 700;">0.00 JOD</span>
                     </div>
-                    <button class="btn-commit" onclick="commitTransaction()">Execute Secure Checkout</button>
+                    <button class="btn-finalize" onclick="commitTransaction()">Process & Print Invoice</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="receiptModal" class="receipt-modal">
-    <div class="receipt-paper">
-        <div style="text-align: center; margin-bottom: 10px; font-weight: 700; font-size: 0.9rem;">AURAMED SYSTEMS JO</div>
-        <div style="text-align: center; margin-bottom: 15px; font-size: 0.65rem;" id="receipt-date">Date: 2026-05-17</div>
-        <table style="width: 100%; border: none; margin-bottom: 10px;">
+<div id="receiptModal" class="modal-overlay">
+    <div class="invoice-sheet">
+        <div style="text-align: center; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">AURAMED PHARMACY JO</div>
+        <div style="text-align: center; font-size: 0.65rem; color: #555; margin-bottom: 15px;" id="receipt-date"></div>
+        <table style="width: 100%; border: none; margin-bottom: 15px;">
             <thead>
-                <tr><th style="text-align: left;">Item</th><th style="text-align: center;">Qty</th><th style="text-align: right;">Total</th></tr>
+                <tr><th>Item</th><th style="text-align: center;">Qty</th><th style="text-align: right;">Total</th></tr>
             </thead>
             <tbody id="receipt-items"></tbody>
         </table>
-        <div style="display: flex; justify-content: space-between; font-weight: 600; margin-top: 5px;"><span>Subtotal:</span><span id="r-sub">0.00 JOD</span></div>
-        <div style="display: flex; justify-content: space-between; color: #555;"><span>Ins. Covered:</span><span id="r-ins">0.00 JOD</span></div>
-        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.85rem; border-top: 1px solid black; padding-top: 5px; margin-top: 5px;"><span>PAID CO-PAY:</span><span id="r-total">0.00 JOD</span></div>
-        <div style="text-align: center; margin-top: 20px; font-size: 0.65rem;">Cloud Sync Hash Validated.<br>Powered by AuraMed v100.0 Core</div>
-        <button class="close-receipt-btn" onclick="closeReceipt()">Close & Clear Buffer</button>
+        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.85rem; border-top: 1px dashed #000; padding-top: 6px;">
+            <span>TOTAL CASH PAID:</span>
+            <span id="r-total">0.00 JOD</span>
+        </div>
+        <div style="text-align: center; margin-top: 25px; font-size: 0.65rem; color: #444;">Terminal Transaction Logged.<br>Thank you for your business.</div>
+        <button class="btn-close-invoice" onclick="closeReceipt()">DISMISS TERMINAL</button>
     </div>
 </div>
 
-<div id="toast" class="toast"></div>
-
 <script>
-    let db = JSON.parse(localStorage.getItem('auramed_v100_db')) || [
-        { barcode: "6251001101", name: "Panadol Advance 500mg", cost: 0.80, price: 1.20, stock: 450, expiry: "2027-12-01" },
-        { barcode: "6251006606", name: "Voltaren Emulgel 50g", cost: 3.90, price: 5.25, stock: 12, expiry: "2026-06-15" },
-        { barcode: "6251002202", name: "Amoclan 625mg Tablets", cost: 4.50, price: 6.45, stock: 85, expiry: "2028-02-10" },
-        { barcode: "6251003303", name: "Profinal 400mg Analgesic", cost: 0.70, price: 1.15, stock: 4, expiry: "2026-04-01" }
+    // ==========================================
+    // 🔒 نظام الحماية والقفل عن بُعد لحماية حقك
+    // تغيرها لـ false إذا الصيدلاني ما رضي يدفع
+    // ==========================================
+    const isSystemActive = true; 
+
+    if (!isSystemActive) {
+        document.getElementById('app-content').style.display = 'none';
+        document.getElementById('lock-screen').style.display = 'flex';
+    }
+
+    let db = JSON.parse(localStorage.getItem('auramed_ent_db')) || [
+        { barcode: "6251001101", name: "Panadol Advance 500mg", price: 1.20, stock: 150 },
+        { barcode: "6251006606", name: "Voltaren Emulgel 50g", price: 5.25, stock: 4 },
+        { barcode: "6251002202", name: "Amoclan 625mg Tablets", price: 6.45, stock: 60 }
     ];
 
-    let grossRevenue = parseFloat(localStorage.getItem('auramed_v100_gross')) || 0.00;
-    let netProfit = parseFloat(localStorage.getItem('auramed_v100_profit')) || 0.00;
-    let invoiceCount = parseInt(localStorage.getItem('auramed_v100_count')) || 0;
+    let totalSales = parseFloat(localStorage.getItem('auramed_ent_sales')) || 0.00;
+    let invoiceCount = parseInt(localStorage.getItem('auramed_ent_count')) || 0;
     let cart = [];
 
     function syncStorage() {
-        localStorage.setItem('auramed_v100_db', JSON.stringify(db));
-        localStorage.setItem('auramed_v100_gross', grossRevenue.toString());
-        localStorage.setItem('auramed_v100_profit', netProfit.toString());
-        localStorage.setItem('auramed_v100_count', invoiceCount.toString());
-    }
-
-    function checkExpiryStatus(expiryStr) {
-        if (!expiryStr) return 'good';
-        const expDate = new Date(expiryStr);
-        const today = new Date();
-        const diffTime = expDate - today;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
-        if (diffDays <= 0) return 'expired';
-        if (diffDays <= 60) return 'near';
-        return 'good';
+        localStorage.setItem('auramed_ent_db', JSON.stringify(db));
+        localStorage.setItem('auramed_ent_sales', totalSales.toString());
+        localStorage.setItem('auramed_ent_count', invoiceCount.toString());
     }
 
     function render() {
+        if (!isSystemActive) return;
         const tbody = document.getElementById('registryBody');
         tbody.innerHTML = "";
-        let alerts = 0;
+        let lowStock = 0;
         
         db.forEach((item, index) => {
-            let isStockLow = item.stock <= 10;
-            let expStatus = checkExpiryStatus(item.expiry);
+            let isLow = item.stock <= 5;
+            if (isLow) lowStock++;
             
-            let stockClass = isStockLow ? 'low' : 'in';
-            let expBadge = '';
-            
-            if (expStatus === 'expired') {
-                alerts++;
-                expBadge = `<span class="status-pill low">Expired</span>`;
-            } else if (expStatus === 'near') {
-                alerts++;
-                expBadge = `<span class="status-pill warn">Near Expiry</span>`;
-            } else {
-                expBadge = `<span style="color: var(--text-muted); font-size:0.75rem;">${item.expiry || 'N/A'}</span>`;
-            }
-
             tbody.innerHTML += `
                 <tr>
-                    <td style="font-family: monospace; font-weight: 500;">${item.barcode}</td>
+                    <td style="font-family: monospace; color: var(--accent-blue);">${item.barcode}</td>
                     <td style="font-weight: 500;">${item.name}</td>
-                    <td style="color: var(--text-muted);">${item.cost.toFixed(2)}</td>
-                    <td style="font-weight: 600; color: var(--primary);">${item.price.toFixed(2)} JOD</td>
-                    <td><span class="status-pill ${stockClass}">${item.stock} units</span></td>
-                    <td>${expBadge}</td>
+                    <td style="font-weight: 600;">${item.price.toFixed(2)} JOD</td>
+                    <td><span style="color: ${isLow ? 'var(--accent-red)' : 'var(--text-primary)'}; font-weight: ${isLow ? '600' : '400'}">${item.stock} units</span></td>
                     <td style="text-align: right;">
-                        <button class="action-link" onclick="addToCart(${index})">Select</button>
-                        <button class="action-link del" onclick="deleteItem(${index})">Purge</button>
+                        <button class="row-btn" onclick="addToCart(${index})">Select</button>
+                        <button class="row-btn purge" onclick="deleteItem(${index})">Delete</button>
                     </td>
                 </tr>
             `;
         });
         
         document.getElementById('m-items').innerText = db.length;
-        document.getElementById('m-alerts').innerText = alerts;
-        document.getElementById('m-rev').innerText = grossRevenue.toFixed(2) + " JOD";
-        document.getElementById('m-profit').innerText = netProfit.toFixed(2) + " JOD";
+        document.getElementById('m-alerts').innerText = lowStock;
+        document.getElementById('m-rev').innerText = totalSales.toFixed(2) + " JOD";
         document.getElementById('m-count').innerText = invoiceCount;
         syncStorage();
     }
@@ -332,27 +272,18 @@
     function addNewItem() {
         let b = document.getElementById('in-barcode').value.trim();
         const n = document.getElementById('in-name').value.trim();
-        const c = parseFloat(document.getElementById('in-cost').value);
         const p = parseFloat(document.getElementById('in-price').value);
         const s = parseInt(document.getElementById('in-stock').value);
-        const e = document.getElementById('in-expiry').value;
 
-        if (!n || isNaN(c) || isNaN(p) || isNaN(s)) return;
-        
-        if (!b) {
-            b = "INT-" + Math.floor(10000000 + Math.random() * 90000000);
-        }
-
+        if (!b || !n || isNaN(p) || isNaN(s)) return;
         if (db.some(item => item.barcode === b)) return;
 
-        db.unshift({ barcode: b, name: n, cost: c, price: p, stock: s, expiry: e });
+        db.unshift({ barcode: b, name: n, price: p, stock: s });
         render();
         
         document.getElementById('in-barcode').value = "";
         document.getElementById('in-name').value = "";
-        document.getElementById('in-cost').value = "";
         document.getElementById('in-price').value = "";
-        document.getElementById('in-expiry').value = "";
     }
 
     function deleteItem(index) {
@@ -362,23 +293,15 @@
 
     function addToCart(index) {
         const item = db[index];
-        if (item.stock <= 0) {
-            showToast("SKU Depleted from Node");
-            return;
-        }
-        
-        if (checkExpiryStatus(item.expiry) === 'expired') {
-            showToast("Error: Blocked Expired Batch");
-            return;
-        }
+        if (item.stock <= 0) return;
         
         let exist = cart.find(c => c.barcode === item.barcode);
         if (exist) {
             if (exist.qty < item.stock) exist.qty++;
         } else {
-            cart.push({ barcode: item.barcode, name: item.name, cost: item.cost, price: item.price, qty: 1, dbIdx: index });
+            cart.push({ barcode: item.barcode, name: item.name, price: item.price, qty: 1, dbIdx: index });
         }
-        calculateTotals();
+        renderCart();
     }
 
     function updateCartQty(index, amt) {
@@ -392,71 +315,52 @@
         } else {
             entry.qty += amt;
         }
-        calculateTotals();
+        renderCart();
     }
 
-    let currentCalculated = { sub: 0, ins: 0, final: 0, totalCost: 0 };
-
-    function calculateTotals() {
+    function renderCart() {
         const wrapper = document.getElementById('cartBody');
         if (cart.length === 0) {
-            wrapper.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;" id="emptyMsg">Terminal Standby. Process client units.</p>`;
-            document.getElementById('sum-sub').innerText = "0.00 JOD";
-            document.getElementById('sum-ins').innerText = "0.00 JOD";
+            wrapper.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding: 50px 0; font-size: 0.85rem;">Terminal Standby</p>`;
             document.getElementById('totalText').innerText = "0.00 JOD";
             return;
         }
         
         wrapper.innerHTML = "";
-        let subtotal = 0;
-        let totalCost = 0;
+        let total = 0;
         
         cart.forEach((item, index) => {
             let rowTotal = item.price * item.qty;
-            subtotal += rowTotal;
-            totalCost += item.cost * item.qty;
+            total += rowTotal;
             
             wrapper.innerHTML += `
-                <div class="cart-row">
+                <div class="bucket-row">
                     <div>
                         <div style="font-weight: 500;">${item.name}</div>
-                        <div style="color: var(--text-muted); font-size: 0.75rem;">${item.qty} units x ${item.price.toFixed(2)}</div>
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">${item.qty} x ${item.price.toFixed(2)}</div>
                     </div>
                     <div style="text-align: right;">
                         <div style="font-weight: 600; margin-bottom: 2px;">${rowTotal.toFixed(2)}</div>
-                        <button class="action-link" onclick="updateCartQty(${index}, 1)">+</button>
-                        <button class="action-link del" onclick="updateCartQty(${index}, -1)">-</button>
+                        <button class="row-btn" onclick="updateCartQty(${index}, 1)">+</button>
+                        <button class="row-btn purge" onclick="updateCartQty(${index}, -1)">-</button>
                     </div>
                 </div>
             `;
         });
         
-        const provider = document.getElementById('ins-provider').value;
-        const copayPct = provider !== 'NONE' ? parseFloat(document.getElementById('ins-copay-pct').value) / 100 : 1;
-        
-        if (provider === 'NONE') {
-            document.getElementById('ins-copay-pct').value = "100";
-        }
-        
-        let patientPay = subtotal * copayPct;
-        let insCoverage = subtotal - patientPay;
-        
-        currentCalculated = { sub: subtotal, ins: insCoverage, final: patientPay, totalCost: totalCost };
-        
-        document.getElementById('sum-sub').innerText = subtotal.toFixed(2) + " JOD";
-        document.getElementById('sum-ins').innerText = insCoverage.toFixed(2) + " JOD";
-        document.getElementById('totalText').innerText = patientPay.toFixed(2) + " JOD";
+        document.getElementById('totalText').innerText = total.toFixed(2) + " JOD";
     }
 
     function commitTransaction() {
         if (cart.length === 0) return;
         
+        let total = 0;
         cart.forEach(entry => {
             db[entry.dbIdx].stock -= entry.qty;
+            total += entry.price * entry.qty;
         });
         
-        grossRevenue += currentCalculated.sub;
-        netProfit += (currentCalculated.sub - currentCalculated.totalCost);
+        totalSales += total;
         invoiceCount++;
         
         document.getElementById('receipt-date').innerText = "Date: " + new Date().toISOString().split('T')[0] + " " + new Date().toLocaleTimeString();
@@ -466,18 +370,12 @@
             rItems.innerHTML += `<tr><td>${item.name}</td><td style="text-align:center;">${item.qty}</td><td style="text-align:right;">${(item.price * item.qty).toFixed(2)}</td></tr>`;
         });
         
-        document.getElementById('r-sub').innerText = currentCalculated.sub.toFixed(2) + " JOD";
-        document.getElementById('r-ins').innerText = currentCalculated.ins.toFixed(2) + " JOD";
-        document.getElementById('r-total').innerText = currentCalculated.final.toFixed(2) + " JOD";
-        
+        document.getElementById('r-total').innerText = total.toFixed(2) + " JOD";
         document.getElementById('receiptModal').style.display = "flex";
         
         cart = [];
-        document.getElementById('ins-provider').value = "NONE";
-        document.getElementById('ins-copay-pct').value = "100";
-        calculateTotals();
+        renderCart();
         render();
-        showToast("Ecosystem Ledger Synchronized");
     }
 
     function closeReceipt() {
@@ -505,13 +403,6 @@
             filterRegistry();
         }
     });
-
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.style.display = 'block';
-        setTimeout(() => { t.style.display = 'none'; }, 2500);
-    }
 
     render();
 </script>
