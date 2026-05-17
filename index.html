@@ -230,38 +230,34 @@
         alert("🔒 قاعدة البيانات المحلية:\n- الحالة: متصلة.\n- عدد المواد المخزنة بالكامل: " + db.length + " أدوية.");
     }
 
-    // 🚀 محرك توليد 700 نوع دواء حقيقي مع 50 دواء منتهي (0 stock) تلقائياً
     function generateLargePharmacyDatabase() {
         let generatedDb = [];
         const drugPrefixes = ["Panadol", "Amoclan", "Voltaren", "Profinal", "Augmentin", "Lipitor", "Concor", "Nexium", "Gaviscon", "Catafast", "Advil", "Zyrtec", "Claritin", "Ventolin", "Brufen", "Glucophage", "Esomeprazole", "Omeprazole", "Paracetamol", "Ibuprofen", "Vichy Cream", "CeraVe Lotion", "Bioderma Sunscreen", "Panadol Extra", "Panadol Joint"];
         const categories = ["500mg", "625mg", "1g", "400mg", "20mg", "10mg", "Gel", "Syrup", "Tablets", "Capsules"];
         
-        // توليد الـ 650 دواء شغالين وطبيعيين
         for (let i = 1; i <= 650; i++) {
             let pref = drugPrefixes[Math.floor(Math.random() * drugPrefixes.length)];
             let cat = categories[Math.floor(Math.random() * categories.length)];
             let name = `${pref} ${cat} (Batch #${1000 + i})`;
             let barcode = (625000000 + i).toString();
             let cost = parseFloat((Math.random() * 8 + 0.5).toFixed(2));
-            let price = parseFloat((cost * 1.35).toFixed(2)); // ربح صيدلاني عادي
-            let stock = Math.floor(Math.random() * 80) + 15; // كميات ممتازة
+            let price = parseFloat((cost * 1.35).toFixed(2));
+            let stock = Math.floor(Math.random() * 80) + 15;
             generatedDb.push({ barcode, name, cost, price, stock });
         }
 
-        // توليد الـ 50 دواء بالضبط المنتهيين تماماً (Stock = 0) لخدمة الـ AI Alerts
         for (let i = 1; i <= 50; i++) {
             let pref = drugPrefixes[Math.floor(Math.random() * drugPrefixes.length)];
             let name = `❌ OUT OF STOCK: ${pref} Essential Max`;
             let barcode = (625990000 + i).toString();
             let cost = parseFloat((Math.random() * 5 + 1).toFixed(2));
             let price = parseFloat((cost * 1.4).toFixed(2));
-            let stock = 0; // مقطوع / منتهي
+            let stock = 0;
             generatedDb.push({ barcode, name, cost, price, stock });
         }
         return generatedDb;
     }
 
-    // فحص المتصفح إذا في داتا مخزنة مسبقاً وإلا بنزل الـ 700 دواء فوراً
     let db = JSON.parse(localStorage.getItem('j_v5_db'));
     if (!db || db.length < 700) {
         db = generateLargePharmacyDatabase();
@@ -295,10 +291,7 @@
         let lowStock = 0;
         let fragment = document.createDocumentFragment();
         
-        // عرض أول 60 مادة فقط في الجدول عشان السيستم يظل سريع والصفحة ما تعلق
         let displayLimit = db.slice(0, 60);
-        
-        // حساب إجمالي الأدوية المنتهية في كل قاعدة البيانات (الـ 700)
         db.forEach(item => { if (item.stock === 0) lowStock++; });
 
         displayLimit.forEach((item, index) => {
@@ -315,7 +308,7 @@
         tbody.appendChild(fragment);
         
         document.getElementById('m-items').innerText = db.length;
-        document.getElementById('m-alerts').innerText = lowStock; // رح تطلع 50 بالتمام والكمال
+        document.getElementById('m-alerts').innerText = lowStock;
         document.getElementById('m-rev').innerText = totalSales.toFixed(2) + " JOD";
         document.getElementById('m-profit').innerText = totalProfit.toFixed(2) + " JOD";
         
@@ -386,24 +379,21 @@
         document.getElementById('receipt-date').innerText = "التاريخ والوقت: " + new Date().toLocaleString('ar-JO');
         document.getElementById('receipt-cashier').innerText = "الصيدلاني المسؤول: " + currentUser;
         const rBody = document.getElementById('receipt-items'); rBody.innerHTML = "";
-        cart.forEach(i => { rBody.innerHTML += `<tr><td>${i.name}</td><td style="text-align:center;">${i.qty}</td><td style="text-align:right;">{(i.price*i.qty).toFixed(2)}</td></tr>`; });
+        cart.forEach(i => { rBody.innerHTML += `<tr><td>${i.name}</td><td style="text-align:center;">${i.qty}</td><td style="text-align:right;">${(i.price*i.qty).toFixed(2)}</td></tr>`; });
         document.getElementById('r-total').innerText = total.toFixed(2) + " JOD";
         document.getElementById('printModal').style.display = "flex";
         cart = []; renderCart(); render();
     }
 
-    // محرك فلترة وبحث خارق يبحث بـ الـ 700 مادة فوراً بدون أي بطء
     function filterRegistry() {
         let val = document.getElementById("searchCtrl").value.toLowerCase();
         const tbody = document.getElementById('registryBody');
         tbody.innerHTML = "";
         
-        // فلترة كل قاعدة البيانات وإرجاع الأدوية المتطابقة
         let filtered = db.filter(item => item.barcode.includes(val) || item.name.toLowerCase().includes(val));
-        let displayLimit = filtered.slice(0, 50); // عرض أول 50 تطابق فقط للسرعة
+        let displayLimit = filtered.slice(0, 50);
 
         displayLimit.forEach((item) => {
-            // إيجاد الاندكس الأصلي في المصفوفة الكبيرة عشان البيع
             let origIdx = db.findIndex(d => d.barcode === item.barcode);
             let tr = document.createElement('tr');
             tr.innerHTML = `
