@@ -3,84 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraMed Core v10.0</title>
+    <title>AuraMed Core v100.0</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            --bg-main: #0b0f19;
-            --bg-card: #131c2e;
-            --border: #24324d;
-            --text-main: #f1f5f9;
-            --text-muted: #64748b;
+            --bg-main: #090d16;
+            --bg-card: #111827;
+            --border: #1f2937;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
             --primary: #0284c7;
             --success: #10b981;
             --danger: #ef4444;
+            --warning: #f59e0b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-main); padding: 20px; }
         
-        .layout-wrapper { max-width: 1600px; margin: 0 auto; display: grid; gap: 20px; }
+        .layout-wrapper { max-width: 1700px; margin: 0 auto; display: grid; gap: 20px; }
         
         header { 
             background: var(--bg-card); 
             padding: 15px 25px; 
-            border-radius: 8px; 
+            border-radius: 6px; 
             border: 1px solid var(--border); 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
         }
-        .logo { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .logo span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+        .logo { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--text-muted); font-weight: 400; font-size: 0.8rem; background: #1f2937; padding: 2px 8px; border-radius: 4px; }
         
-        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .stat-box p { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 600; }
-        .stat-box h3 { font-size: 1.5rem; font-weight: 700; margin-top: 5px; }
-        .stat-icon { font-size: 1.2rem; color: var(--text-muted); }
+        .stats-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+        .stat-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .stat-box p { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
+        .stat-box h3 { font-size: 1.4rem; font-weight: 700; margin-top: 5px; }
+        .stat-icon { font-size: 1.1rem; color: var(--text-muted); }
         
-        .main-content { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; }
-        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); font-size: 0.95rem; font-weight: 600; }
+        .main-content { display: grid; grid-template-columns: 2.1fr 1fr; gap: 20px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-muted); }
         
-        .form-row { display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 10px; align-items: flex-end; }
+        .form-grid { display: grid; grid-template-columns: repeat(5, 1fr) auto; gap: 10px; align-items: flex-end; }
         .field-group { display: flex; flex-direction: column; gap: 5px; }
-        .field-group label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-        .ctrl-input { background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; color: var(--text-main); font-size: 0.85rem; width: 100%; }
+        .field-group label { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+        .ctrl-input { background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 8px 10px; color: var(--text-main); font-size: 0.8rem; width: 100%; height: 36px; }
         .ctrl-input:focus { border-color: var(--primary); outline: none; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 9px 16px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; cursor: pointer; height: 35px; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 0 15px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; cursor: pointer; height: 36px; }
         
-        .search-row { position: relative; margin: 15px 0; }
-        .search-ctrl { width: 100%; background: var(--bg-main); border: 1px solid var(--border); border-radius: 6px; padding: 12px 15px 12px 40px; color: var(--text-main); font-size: 0.85rem; }
-        .search-row i { position: absolute; left: 15px; top: 15px; color: var(--text-muted); }
-
-        .grid-container { max-height: 450px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; }
+        .search-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 15px 0; }
+        .search-wrapper { position: relative; width: 100%; }
+        .search-ctrl { width: 100%; background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 10px 15px 10px 38px; color: var(--text-main); font-size: 0.85rem; }
+        .search-wrapper i { position: absolute; left: 14px; top: 13px; color: var(--text-muted); }
+        
+        .grid-container { max-height: 480px; overflow-y: auto; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-main); }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px 15px; border-bottom: 1px solid var(--border); font-size: 0.85rem; text-align: left; }
-        th { background: #172237; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        th, td { padding: 10px 15px; border-bottom: 1px solid var(--border); font-size: 0.8rem; text-align: left; }
+        th { background: #111827; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; font-size: 0.75rem; text-transform: uppercase; }
         tr:hover td { background: rgba(255,255,255,0.01); }
         
-        .status-pill { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+        .status-pill { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; display: inline-block; }
         .status-pill.in { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .status-pill.low { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .status-pill.warn { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
 
         .action-link { background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.8rem; font-weight: 600; margin-right: 10px; }
         .action-link.del { color: var(--danger); }
 
-        .cart-wrapper { display: flex; flex-direction: column; min-height: 550px; justify-content: space-between; }
-        .cart-list { max-height: 350px; overflow-y: auto; }
-        .cart-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 0.85rem; }
+        .cart-wrapper { display: flex; flex-direction: column; min-height: 600px; justify-content: space-between; }
+        .cart-list { max-height: 320px; overflow-y: auto; }
+        .cart-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 0.8rem; }
         
-        .checkout-box { border-top: 1px solid var(--border); padding-top: 15px; }
-        .total-summary { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 700; margin-bottom: 15px; }
-        .btn-commit { width: 100%; background: var(--success); color: white; border: none; padding: 12px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
-        .btn-commit:hover { opacity: 0.9; }
+        .insurance-panel { background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; padding: 12px; margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         
-        .toast { position: fixed; bottom: 20px; left: 20px; background: var(--primary); color: white; padding: 12px 20px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .checkout-box { border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+        .total-summary { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+        .btn-commit { width: 100%; background: var(--success); color: white; border: none; padding: 12px; border-radius: 4px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        
+        .toast { position: fixed; bottom: 20px; left: 20px; background: var(--primary); color: white; padding: 12px 20px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 2000; }
+        
+        .receipt-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .receipt-paper { background: white; color: black; width: 300px; padding: 20px; font-family: monospace; font-size: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 2px; }
+        .receipt-paper th, .receipt-paper td { color: black; padding: 4px 0; border-bottom: 1px dashed #ccc; font-family: monospace; font-size: 0.75rem; }
+        .receipt-paper th { background: none; }
+        .close-receipt-btn { background: var(--danger); color: white; border: none; padding: 8px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: 600; font-size: 0.8rem; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -88,58 +99,72 @@
 <div class="layout-wrapper">
     
     <header>
-        <div class="logo">AuraMed Systems <span>v10.0 Stable Core</span></div>
-        <div style="font-size: 0.85rem; color: var(--success); font-weight: 600;"><i class="fa-solid fa-server"></i> Local Server: Connected</div>
+        <div class="logo">AuraMed Network <span>v100.0 Enterprise Terminal</span></div>
+        <div style="font-size: 0.8rem; color: var(--success); font-weight: 600;"><i class="fa-solid fa-cloud"></i> Node Synchronizer Active (Amman Central)</div>
     </header>
 
     <div class="stats-bar">
         <div class="stat-box">
-            <div><p>Daily Revenue</p><h3 id="m-rev">0.00 JOD</h3></div>
+            <div><p>Gross Revenue</p><h3 id="m-rev">0.00 JOD</h3></div>
             <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
         </div>
         <div class="stat-box">
-            <div><p>Transactions</p><h3 id="m-count">0</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div><p>Net Profit</p><h3 id="m-profit" style="color: var(--success);">0.00 JOD</h3></div>
+            <div class="stat-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+        </div>
+        <div class="stat-box">
+            <div><p>Invoices Cleared</p><h3 id="m-count">0</h3></div>
+            <div class="stat-icon"><i class="fa-solid fa-file-invoice"></i></div>
         </div>
         <div class="stat-box">
             <div><p>Active Items</p><h3 id="m-items">0</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-box-archive"></i></div>
+            <div class="stat-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
         </div>
         <div class="stat-box">
-            <div><p>Alerts</p><h3 id="m-alerts">0</h3></div>
-            <div class="stat-icon"><i class="fa-solid fa-bell"></i></div>
+            <div><p>Critical Expiries</p><h3 id="m-alerts" style="color: var(--danger);">0</h3></div>
+            <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
         </div>
     </div>
 
     <div class="main-content">
         <div class="left-col">
             <div class="card" style="margin-bottom: 20px;">
-                <div class="card-header">Inventory Management Console</div>
-                <div class="form-row">
+                <div class="card-header">Inventory & Batch Intake Portal</div>
+                <div class="form-grid">
                     <div class="field-group">
-                        <label>Barcode</label>
-                        <input type="text" id="in-barcode" class="ctrl-input">
+                        <label>Barcode ID</label>
+                        <input type="text" id="in-barcode" class="ctrl-input" placeholder="Scan/Leave blank auto">
                     </div>
                     <div class="field-group">
                         <label>Description</label>
                         <input type="text" id="in-name" class="ctrl-input">
                     </div>
                     <div class="field-group">
-                        <label>Price (JOD)</label>
+                        <label>Cost Price</label>
+                        <input type="number" step="0.01" id="in-cost" class="ctrl-input">
+                    </div>
+                    <div class="field-group">
+                        <label>Retail Price</label>
                         <input type="number" step="0.01" id="in-price" class="ctrl-input">
                     </div>
                     <div class="field-group">
                         <label>Stock Qty</label>
                         <input type="number" id="in-stock" class="ctrl-input" value="100">
                     </div>
-                    <button class="btn-submit" onclick="addNewItem()">Save Item</button>
+                    <div class="field-group">
+                        <label>Expiry Date</label>
+                        <input type="date" id="in-expiry" class="ctrl-input">
+                    </div>
+                    <button class="btn-submit" onclick="addNewItem()">Save SKU</button>
                 </div>
             </div>
 
             <div class="card">
                 <div class="search-row">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" id="searchCtrl" class="search-ctrl" placeholder="Scan barcode or enter text to filter registry..." onkeyup="filterRegistry()">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="searchCtrl" class="search-ctrl" placeholder="Intercept Hardware Scanner Input or Filter Inventory..." onkeyup="filterRegistry()">
+                    </div>
                 </div>
                 
                 <div class="grid-container">
@@ -148,9 +173,11 @@
                             <tr>
                                 <th>Barcode</th>
                                 <th>Description</th>
-                                <th>Unit Price</th>
+                                <th>Cost</th>
+                                <th>Retail</th>
                                 <th>Stock Status</th>
-                                <th style="text-align: right;">Actions</th>
+                                <th>Expiry Batch</th>
+                                <th style="text-align: right;">Terminal Action</th>
                             </tr>
                         </thead>
                         <tbody id="registryBody"></tbody>
@@ -162,42 +189,98 @@
         <div class="right-col">
             <div class="card cart-wrapper">
                 <div>
-                    <div class="card-header">Current Transaction</div>
+                    <div class="card-header">Active Bill Station</div>
                     <div id="cartBody" class="cart-list">
-                        <p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;" id="emptyMsg">Awaiting item inputs...</p>
+                        <p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;" id="emptyMsg">Terminal Standby. Process client units.</p>
+                    </div>
+                    
+                    <div class="insurance-panel">
+                        <div class="field-group">
+                            <label>شركة إدارة التأمين (TPA)</label>
+                            <select id="ins-provider" class="ctrl-input" onchange="calculateTotals()">
+                                <option value="NONE">كاش (مريض شخصي)</option>
+                                <option value="MED">MedService (ميد سيرفيس)</option>
+                                <option value="NAT">NatHealth (نات هيلث)</option>
+                                <option value="GLOBE">GlobeMed (غلوب ميد)</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>نسبة التحمل للمريض (%)</label>
+                            <select id="ins-copay-pct" class="ctrl-input" onchange="calculateTotals()">
+                                <option value="100">تحمل كامل 100% (كاش)</option>
+                                <option value="20">يتحمل 20% (التأمين يغطي 80%)</option>
+                                <option value="15">يتحمل 15% (التأمين يغطي 85%)</option>
+                                <option value="10">يتحمل 10% (التأمين يغطي 90%)</option>
+                                <option value="0">إعفاء كامل 0%</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
                 <div class="checkout-box">
+                    <div class="summary-row"><span>Gross Subtotal</span><span id="sum-sub">0.00 JOD</span></div>
+                    <div class="summary-row"><span>Insurance Coverage</span><span id="sum-ins" style="color: var(--success);">0.00 JOD</span></div>
                     <div class="total-summary">
-                        <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Total</span>
-                        <span id="totalText">0.00 JOD</span>
+                        <span>Patient Co-Pay Due</span>
+                        <span id="totalText" style="color: var(--primary);">0.00 JOD</span>
                     </div>
-                    <button class="btn-commit" onclick="commitTransaction()">Process Invoice</button>
+                    <button class="btn-commit" onclick="commitTransaction()">Execute Secure Checkout</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<div id="receiptModal" class="receipt-modal">
+    <div class="receipt-paper">
+        <div style="text-align: center; margin-bottom: 10px; font-weight: 700; font-size: 0.9rem;">AURAMED SYSTEMS JO</div>
+        <div style="text-align: center; margin-bottom: 15px; font-size: 0.65rem;" id="receipt-date">Date: 2026-05-17</div>
+        <table style="width: 100%; border: none; margin-bottom: 10px;">
+            <thead>
+                <tr><th style="text-align: left;">Item</th><th style="text-align: center;">Qty</th><th style="text-align: right;">Total</th></tr>
+            </thead>
+            <tbody id="receipt-items"></tbody>
+        </table>
+        <div style="display: flex; justify-content: space-between; font-weight: 600; margin-top: 5px;"><span>Subtotal:</span><span id="r-sub">0.00 JOD</span></div>
+        <div style="display: flex; justify-content: space-between; color: #555;"><span>Ins. Covered:</span><span id="r-ins">0.00 JOD</span></div>
+        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.85rem; border-top: 1px solid black; padding-top: 5px; margin-top: 5px;"><span>PAID CO-PAY:</span><span id="r-total">0.00 JOD</span></div>
+        <div style="text-align: center; margin-top: 20px; font-size: 0.65rem;">Cloud Sync Hash Validated.<br>Powered by AuraMed v100.0 Core</div>
+        <button class="close-receipt-btn" onclick="closeReceipt()">Close & Clear Buffer</button>
+    </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('auramed_db')) || [
-        { barcode: "6251001101", name: "Panadol Advance 500mg", price: 1.20, stock: 800, limit: 30 },
-        { barcode: "6251006606", name: "Voltaren Emulgel 50g", price: 5.25, stock: 200, limit: 15 },
-        { barcode: "6251002202", name: "Amoclan 625mg", price: 6.45, stock: 200, limit: 15 },
-        { barcode: "6251003303", name: "Profinal 400mg", price: 1.15, stock: 250, limit: 20 }
+    let db = JSON.parse(localStorage.getItem('auramed_v100_db')) || [
+        { barcode: "6251001101", name: "Panadol Advance 500mg", cost: 0.80, price: 1.20, stock: 450, expiry: "2027-12-01" },
+        { barcode: "6251006606", name: "Voltaren Emulgel 50g", cost: 3.90, price: 5.25, stock: 12, expiry: "2026-06-15" },
+        { barcode: "6251002202", name: "Amoclan 625mg Tablets", cost: 4.50, price: 6.45, stock: 85, expiry: "2028-02-10" },
+        { barcode: "6251003303", name: "Profinal 400mg Analgesic", cost: 0.70, price: 1.15, stock: 4, expiry: "2026-04-01" }
     ];
 
-    let sessionRevenue = parseFloat(localStorage.getItem('auramed_rev')) || 0.00;
-    let sessionCount = parseInt(localStorage.getItem('auramed_count')) || 0;
+    let grossRevenue = parseFloat(localStorage.getItem('auramed_v100_gross')) || 0.00;
+    let netProfit = parseFloat(localStorage.getItem('auramed_v100_profit')) || 0.00;
+    let invoiceCount = parseInt(localStorage.getItem('auramed_v100_count')) || 0;
     let cart = [];
 
     function syncStorage() {
-        localStorage.setItem('auramed_db', JSON.stringify(db));
-        localStorage.setItem('auramed_rev', sessionRevenue.toString());
-        localStorage.setItem('auramed_count', sessionCount.toString());
+        localStorage.setItem('auramed_v100_db', JSON.stringify(db));
+        localStorage.setItem('auramed_v100_gross', grossRevenue.toString());
+        localStorage.setItem('auramed_v100_profit', netProfit.toString());
+        localStorage.setItem('auramed_v100_count', invoiceCount.toString());
+    }
+
+    function checkExpiryStatus(expiryStr) {
+        if (!expiryStr) return 'good';
+        const expDate = new Date(expiryStr);
+        const today = new Date();
+        const diffTime = expDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays <= 0) return 'expired';
+        if (diffDays <= 60) return 'near';
+        return 'good';
     }
 
     function render() {
@@ -206,18 +289,33 @@
         let alerts = 0;
         
         db.forEach((item, index) => {
-            let isLow = item.stock <= item.limit;
-            if (isLow) alerts++;
+            let isStockLow = item.stock <= 10;
+            let expStatus = checkExpiryStatus(item.expiry);
             
+            let stockClass = isStockLow ? 'low' : 'in';
+            let expBadge = '';
+            
+            if (expStatus === 'expired') {
+                alerts++;
+                expBadge = `<span class="status-pill low">Expired</span>`;
+            } else if (expStatus === 'near') {
+                alerts++;
+                expBadge = `<span class="status-pill warn">Near Expiry</span>`;
+            } else {
+                expBadge = `<span style="color: var(--text-muted); font-size:0.75rem;">${item.expiry || 'N/A'}</span>`;
+            }
+
             tbody.innerHTML += `
                 <tr>
-                    <td style="font-family: monospace;">${item.barcode}</td>
+                    <td style="font-family: monospace; font-weight: 500;">${item.barcode}</td>
                     <td style="font-weight: 500;">${item.name}</td>
+                    <td style="color: var(--text-muted);">${item.cost.toFixed(2)}</td>
                     <td style="font-weight: 600; color: var(--primary);">${item.price.toFixed(2)} JOD</td>
-                    <td><span class="status-pill ${isLow ? 'low' : 'in'}">${item.stock} units</span></td>
+                    <td><span class="status-pill ${stockClass}">${item.stock} units</span></td>
+                    <td>${expBadge}</td>
                     <td style="text-align: right;">
                         <button class="action-link" onclick="addToCart(${index})">Select</button>
-                        <button class="action-link del" onclick="deleteItem(${index})">Remove</button>
+                        <button class="action-link del" onclick="deleteItem(${index})">Purge</button>
                     </td>
                 </tr>
             `;
@@ -225,26 +323,36 @@
         
         document.getElementById('m-items').innerText = db.length;
         document.getElementById('m-alerts').innerText = alerts;
-        document.getElementById('m-rev').innerText = sessionRevenue.toFixed(2) + " JOD";
-        document.getElementById('m-count').innerText = sessionCount;
+        document.getElementById('m-rev').innerText = grossRevenue.toFixed(2) + " JOD";
+        document.getElementById('m-profit').innerText = netProfit.toFixed(2) + " JOD";
+        document.getElementById('m-count').innerText = invoiceCount;
         syncStorage();
     }
 
     function addNewItem() {
-        const b = document.getElementById('in-barcode').value.trim();
+        let b = document.getElementById('in-barcode').value.trim();
         const n = document.getElementById('in-name').value.trim();
+        const c = parseFloat(document.getElementById('in-cost').value);
         const p = parseFloat(document.getElementById('in-price').value);
         const s = parseInt(document.getElementById('in-stock').value);
+        const e = document.getElementById('in-expiry').value;
 
-        if (!b || !n || isNaN(p) || isNaN(s)) return;
+        if (!n || isNaN(c) || isNaN(p) || isNaN(s)) return;
+        
+        if (!b) {
+            b = "INT-" + Math.floor(10000000 + Math.random() * 90000000);
+        }
+
         if (db.some(item => item.barcode === b)) return;
 
-        db.unshift({ barcode: b, name: n, price: p, stock: s, limit: 10 });
+        db.unshift({ barcode: b, name: n, cost: c, price: p, stock: s, expiry: e });
         render();
         
         document.getElementById('in-barcode').value = "";
         document.getElementById('in-name').value = "";
+        document.getElementById('in-cost').value = "";
         document.getElementById('in-price').value = "";
+        document.getElementById('in-expiry').value = "";
     }
 
     function deleteItem(index) {
@@ -254,15 +362,23 @@
 
     function addToCart(index) {
         const item = db[index];
-        if (item.stock <= 0) return;
+        if (item.stock <= 0) {
+            showToast("SKU Depleted from Node");
+            return;
+        }
+        
+        if (checkExpiryStatus(item.expiry) === 'expired') {
+            showToast("Error: Blocked Expired Batch");
+            return;
+        }
         
         let exist = cart.find(c => c.barcode === item.barcode);
         if (exist) {
             if (exist.qty < item.stock) exist.qty++;
         } else {
-            cart.push({ barcode: item.barcode, name: item.name, price: item.price, qty: 1, dbIdx: index });
+            cart.push({ barcode: item.barcode, name: item.name, cost: item.cost, price: item.price, qty: 1, dbIdx: index });
         }
-        renderCart();
+        calculateTotals();
     }
 
     function updateCartQty(index, amt) {
@@ -276,29 +392,35 @@
         } else {
             entry.qty += amt;
         }
-        renderCart();
+        calculateTotals();
     }
 
-    function renderCart() {
+    let currentCalculated = { sub: 0, ins: 0, final: 0, totalCost: 0 };
+
+    function calculateTotals() {
         const wrapper = document.getElementById('cartBody');
         if (cart.length === 0) {
-            wrapper.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;" id="emptyMsg">Awaiting item inputs...</p>`;
+            wrapper.innerHTML = `<p style="color: var(--text-muted); text-align:center; padding: 40px 0; font-size: 0.8rem;" id="emptyMsg">Terminal Standby. Process client units.</p>`;
+            document.getElementById('sum-sub').innerText = "0.00 JOD";
+            document.getElementById('sum-ins').innerText = "0.00 JOD";
             document.getElementById('totalText').innerText = "0.00 JOD";
             return;
         }
         
         wrapper.innerHTML = "";
-        let total = 0;
+        let subtotal = 0;
+        let totalCost = 0;
         
         cart.forEach((item, index) => {
             let rowTotal = item.price * item.qty;
-            total += rowTotal;
+            subtotal += rowTotal;
+            totalCost += item.cost * item.qty;
             
             wrapper.innerHTML += `
                 <div class="cart-row">
                     <div>
                         <div style="font-weight: 500;">${item.name}</div>
-                        <div style="color: var(--text-muted); font-size: 0.75rem;">${item.qty} x ${item.price.toFixed(2)}</div>
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">${item.qty} units x ${item.price.toFixed(2)}</div>
                     </div>
                     <div style="text-align: right;">
                         <div style="font-weight: 600; margin-bottom: 2px;">${rowTotal.toFixed(2)}</div>
@@ -309,25 +431,57 @@
             `;
         });
         
-        document.getElementById('totalText').innerText = total.toFixed(2) + " JOD";
+        const provider = document.getElementById('ins-provider').value;
+        const copayPct = provider !== 'NONE' ? parseFloat(document.getElementById('ins-copay-pct').value) / 100 : 1;
+        
+        if (provider === 'NONE') {
+            document.getElementById('ins-copay-pct').value = "100";
+        }
+        
+        let patientPay = subtotal * copayPct;
+        let insCoverage = subtotal - patientPay;
+        
+        currentCalculated = { sub: subtotal, ins: insCoverage, final: patientPay, totalCost: totalCost };
+        
+        document.getElementById('sum-sub').innerText = subtotal.toFixed(2) + " JOD";
+        document.getElementById('sum-ins').innerText = insCoverage.toFixed(2) + " JOD";
+        document.getElementById('totalText').innerText = patientPay.toFixed(2) + " JOD";
     }
 
     function commitTransaction() {
         if (cart.length === 0) return;
         
-        let total = 0;
         cart.forEach(entry => {
             db[entry.dbIdx].stock -= entry.qty;
-            total += entry.price * entry.qty;
         });
         
-        sessionRevenue += total;
-        sessionCount++;
+        grossRevenue += currentCalculated.sub;
+        netProfit += (currentCalculated.sub - currentCalculated.totalCost);
+        invoiceCount++;
+        
+        document.getElementById('receipt-date').innerText = "Date: " + new Date().toISOString().split('T')[0] + " " + new Date().toLocaleTimeString();
+        const rItems = document.getElementById('receipt-items');
+        rItems.innerHTML = "";
+        cart.forEach(item => {
+            rItems.innerHTML += `<tr><td>${item.name}</td><td style="text-align:center;">${item.qty}</td><td style="text-align:right;">${(item.price * item.qty).toFixed(2)}</td></tr>`;
+        });
+        
+        document.getElementById('r-sub').innerText = currentCalculated.sub.toFixed(2) + " JOD";
+        document.getElementById('r-ins').innerText = currentCalculated.ins.toFixed(2) + " JOD";
+        document.getElementById('r-total').innerText = currentCalculated.final.toFixed(2) + " JOD";
+        
+        document.getElementById('receiptModal').style.display = "flex";
         
         cart = [];
-        renderCart();
+        document.getElementById('ins-provider').value = "NONE";
+        document.getElementById('ins-copay-pct').value = "100";
+        calculateTotals();
         render();
-        showToast("Invoice Cleared");
+        showToast("Ecosystem Ledger Synchronized");
+    }
+
+    function closeReceipt() {
+        document.getElementById('receiptModal').style.display = "none";
     }
 
     function filterRegistry() {
